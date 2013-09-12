@@ -31,8 +31,6 @@ var app = express();
  * Use body parser to extract body params
  */
 app.use(express.bodyParser());
-
-
 app.use(expressValidator());
 
 app.use(function(err, req, res, next) {
@@ -51,9 +49,13 @@ app.get('/', function(req, res){
 
 var accountHandler = new AccountHandler(db);
 
+//Account routes
 app.post('/account', accountHandler.createAccount);
 app.del('/account', accountHandler.deleteAccount);
 app.get('/account/:id', accountHandler.readAccount);
+app.post('/account/set-saving-rate', accountHandler.setSavingRate);
+app.post('/account/set-loan-rate', accountHandler.setLoanRate);
+
 
 app.listen(3000);
 console.log('Listening on port 3000');

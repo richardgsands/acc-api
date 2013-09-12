@@ -32,7 +32,7 @@ function Account(db){
 
     };
 
-    this.deleteAccount = function(req, res){
+    this.deleteAccount = function(req, res) {
 
         req.checkBody('id', 'Invalid id').notEmpty();
 
@@ -69,6 +69,44 @@ function Account(db){
             }
         });
 
+    };
+
+    this.setSavingRate = function(req, res) {
+
+        req.checkBody('id', 'Invalid id').notEmpty();
+        req.checkBody('rate', 'No rate specified').notEmpty();
+
+        self.handleErrors(req.validationErrors(), res);
+
+        var collection = db.collection('account');
+
+        collection.updateById(req.body.id, {saving_rate:req.body.rate}, function(e, result){
+            if (e) return next(e);
+
+             if(result === 1)
+                res.json({"rate": req.body.rate});
+            else
+                res.json(404, {"error": 'Invalid account id'});
+        });
+    };
+
+    this.setLoanRate = function(req, res) {
+
+        req.checkBody('id', 'Invalid id').notEmpty();
+        req.checkBody('rate', 'No rate specified').notEmpty();
+
+        self.handleErrors(req.validationErrors(), res);
+
+        var collection = db.collection('account');
+
+        collection.updateById(req.body.id, {loan_rate:req.body.rate}, function(e, result){
+            if (e) return next(e);
+
+             if(result === 1)
+                res.json({"rate": req.body.rate});
+            else
+                res.json(404, {"error": 'Invalid account id'});
+        });
     };
 
     /**

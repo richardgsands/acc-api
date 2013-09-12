@@ -49,6 +49,64 @@ describe('Bank of Dad API', function(){
         });
     });
 
+    it('set saving rate validation fail', function(done){
+        superagent.post('http://localhost:3000/account/set-saving-rate')
+        .send({
+            id: id
+        })
+        .end(function(e,res){
+            expect(e).to.eql(null);
+            expect(res.body.error).to.be(true);
+            expect(res.body.rate).to.be.eql(undefined);
+
+            done();
+        });
+    });
+
+    it('set saving rate', function(done){
+        superagent.post('http://localhost:3000/account/set-saving-rate')
+        .send({
+            id: id,
+            rate: 50,
+        })
+        .end(function(e,res){
+            expect(e).to.eql(null);
+            expect(res.body.error).not.to.be(true);
+            expect(res.body.rate).to.be(50);
+
+            done();
+        });
+    });
+
+    it('set loan rate validation fail', function(done){
+        superagent.post('http://localhost:3000/account/set-loan-rate')
+        .send({
+            id: id
+        })
+        .end(function(e,res){
+            expect(e).to.eql(null);
+            expect(res.body.error).to.be(true);
+            expect(res.body.rate).to.be.eql(undefined);
+
+            done();
+        });
+    });
+
+    it('set loan rate', function(done){
+        superagent.post('http://localhost:3000/account/set-loan-rate')
+        .send({
+            id: id,
+            rate: 50,
+        })
+        .end(function(e,res){
+            expect(e).to.eql(null);
+            expect(res.body.error).not.to.be(true);
+            expect(res.body.rate).to.be(50);
+
+            done();
+        });
+    });
+
     it('delete account fail validation', function(done){
         superagent.del('http://localhost:3000/account')
         .send({
@@ -75,6 +133,7 @@ describe('Bank of Dad API', function(){
             done();
         });
     });
+
 
     /** **/
 
