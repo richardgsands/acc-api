@@ -1,0 +1,27 @@
+{
+  "name": "decoded_bank_of_dad",
+  "version": "0.0.0",
+  "description": "Bank of Dad API",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/DecodedCo/bank-of-dad-api.git"
+  },
+  "author": "",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "bba61b962ffa7b38032f7ba2e94a27e05b89a1b8",
+  "dependencies": {
+    "express": "~3.4.0",
+    "mocha": "~1.12.1",
+    "mongoskin": "~0.6.0",
+    "underscore": "~1.5.2",
+    "express-validator": "~0.8.0"
+  },
+  "devDependencies": {
+    "mocha": "~1.12.1",
+  }
+}
