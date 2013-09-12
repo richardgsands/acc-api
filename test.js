@@ -113,4 +113,42 @@ describe('Bank of Dad API', function(){
 
     /** **/
 
+
+    /** TRANSACTION **/
+    it('create transaction', function(done){
+
+        superagent.post('http://localhost:3000/account')
+        .send({
+            parent_name: 'Geoff',
+            child_name: 'Penelope'
+        })
+        .end(function(e,res){
+
+            id = res.body.id;
+
+            superagent.post('http://localhost:3000/transaction')
+            .send({
+                account_id: id,
+                amount: 10,
+                description: "A test payment deposit",
+                deposit: 0,
+                withdrawal: 1
+            })
+            .end(function(e,res){
+
+                console.log(res.body);
+
+                expect(e).to.eql(null);
+                expect(res.body.error).not.to.be(true);
+                expect(res.body.transactions[0].amount).to.be(10);
+                expect(res.body.transactions[0].description).to.be("A test payment deposit");
+                expect(res.body.transactions[0].deposit).to.be(1);
+                expect(res.body.transactions[0].withdrawal).to.be(0);
+
+                done();
+            });
+        });
+
+    });
+
 });

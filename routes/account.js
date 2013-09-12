@@ -1,13 +1,13 @@
 var _ = require('underscore');
 
 /**
- * Account bashed route handling
+ * Account based route handling
  * @param object db  MongoSkin db instance
  */
 function Account(db){
 
     var self = this,
-        allowedUpdates = ['loan_rate', 'saving_rate', 'pockey_money_amount', 'pocket_money_day']; //Fields allowed to be set during update
+        allowedUpdates = ['loan_rate', 'saving_rate', 'pocket_money_amount', 'pocket_money_day']; //Fields allowed to be set during update
 
     this.createAccount = function(req, res) {
 

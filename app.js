@@ -6,6 +6,7 @@ var _ = require('underscore'),
     express = require('express'),
     expressValidator = require('express-validator'),
     AccountHandler = require('./routes/account.js'),
+    TransactionHandler = require('./routes/transaction.js'),
     mongoskin = require('mongoskin');
 
 
@@ -16,8 +17,12 @@ db.bind('account', {
     byId: function(id, fn){
 
         this.findById(id, function(err, result){
-            result.id = result._id;
-            delete result._id;
+
+            if(!_.isEmpty(result)){
+                result.id = result._id;
+                delete result._id;
+            }
+
             fn(err, result);
         });
 
@@ -48,12 +53,16 @@ app.get('/', function(req, res){
 });
 
 var accountHandler = new AccountHandler(db);
+var transactionHandler = new TransactionHandler(db);
 
 //Account routes
 app.post('/account', accountHandler.createAccount);
 app.del('/account', accountHandler.deleteAccount);
 app.get('/account/:id', accountHandler.readAccount);
 app.put('/account', accountHandler.updateAccount);
+
+//Transaction routes
+app.post('/transaction', transactionHandler.createTransaction);
 
 app.listen(3000);
 console.log('Listening on port 3000');
