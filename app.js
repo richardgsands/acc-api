@@ -1,3 +1,6 @@
+
+process.env.TZ = "Europe/London";
+
 var _ = require('underscore'),
     util = require('util'),
     express = require('express'),
@@ -7,6 +10,18 @@ var _ = require('underscore'),
 
 //Setup DB
 var db = mongoskin.db('localhost:27017/bankofdad', {safe:true});
+
+db.bind('account', {
+    byId: function(id, fn){
+
+        this.findById(id, function(err, result){
+            result.id = result._id;
+            delete result._id;
+            fn(err, result);
+        });
+
+    }
+});
 
 //Setup Express
 var app = express();
@@ -54,10 +69,39 @@ app.post('/account', function(req, res) {
 
     var collection = db.collection('account');
 
-    collection.insert({"parent_name": req.body.parent_name, "child_name": req.body.child_name}, {}, function(e, results){
+    var toInsert = {
+        "parent_name": req.body.parent_name,
+        "child_name": req.body.child_name,
+        "start_date": new Date()
+    };
+
+    collection.insert(toInsert, {}, function(e, results){
         if (e) return next(e);
 
         res.json({'id':results[0]._id});
+    });
+
+});
+
+app.del('/account', function(req, res){
+
+    req.checkBody('id', 'Invalid id').notEmpty();
+
+    var collection = db.collection('account');
+
+    var errors = req.validationErrors();
+    if (errors) {
+        res.json(400, {"error": true, "messages": errors});
+        return;
+    }
+
+    collection.removeById(req.body.id, {}, function(e, results){
+        if (e) return next(e);
+
+        if(results === 1)
+            res.json({"deleted": req.body.id});
+        else
+            res.json(404, {"error": 'Nothing to delete'});
     });
 
 });
@@ -69,9 +113,27 @@ app.post('/account', function(req, res) {
  * @param  object res
  * @return object     Response
  */
-app.get('/:collectionName', function(req, res) {
+app.get('/account/:id', function(req, res) {
 
-    console.log(req.collection);
+    req.assert('id', 'Invalid id').notEmpty();
+
+    var errors = req.validationErrors();
+    if (errors) {
+        res.json(400, {"error": true, "messages": errors});
+        return;
+    }
+
+    var collection = db.collection('account');
+
+    collection.byId(req.params.id, function(e, result){
+        if (e) return next(e);
+
+        if(!_.isEmpty(result)){
+            res.json(result);
+        }else{
+            res.json(404, {"error": 'No account found'});
+        }
+    });
 
 });
 
