@@ -53,9 +53,7 @@ var accountHandler = new AccountHandler(db);
 app.post('/account', accountHandler.createAccount);
 app.del('/account', accountHandler.deleteAccount);
 app.get('/account/:id', accountHandler.readAccount);
-app.post('/account/set-saving-rate', accountHandler.setSavingRate);
-app.post('/account/set-loan-rate', accountHandler.setLoanRate);
-
+app.put('/account', accountHandler.updateAccount);
 
 app.listen(3000);
 console.log('Listening on port 3000');

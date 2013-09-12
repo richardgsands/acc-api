@@ -49,10 +49,9 @@ describe('Bank of Dad API', function(){
         });
     });
 
-    it('set saving rate validation fail', function(done){
-        superagent.post('http://localhost:3000/account/set-saving-rate')
+    it('update account validation fail', function(done){
+        superagent.put('http://localhost:3000/account')
         .send({
-            id: id
         })
         .end(function(e,res){
             expect(e).to.eql(null);
@@ -63,45 +62,22 @@ describe('Bank of Dad API', function(){
         });
     });
 
-    it('set saving rate', function(done){
-        superagent.post('http://localhost:3000/account/set-saving-rate')
+    it('update account', function(done){
+        superagent.put('http://localhost:3000/account')
         .send({
             id: id,
-            rate: 50,
+            saving_rate: 50,
+            loan_rate: 10,
+            pocket_money_amount: 5,
+            pocket_money_day: 3,
         })
         .end(function(e,res){
             expect(e).to.eql(null);
             expect(res.body.error).not.to.be(true);
-            expect(res.body.rate).to.be(50);
-
-            done();
-        });
-    });
-
-    it('set loan rate validation fail', function(done){
-        superagent.post('http://localhost:3000/account/set-loan-rate')
-        .send({
-            id: id
-        })
-        .end(function(e,res){
-            expect(e).to.eql(null);
-            expect(res.body.error).to.be(true);
-            expect(res.body.rate).to.be.eql(undefined);
-
-            done();
-        });
-    });
-
-    it('set loan rate', function(done){
-        superagent.post('http://localhost:3000/account/set-loan-rate')
-        .send({
-            id: id,
-            rate: 50,
-        })
-        .end(function(e,res){
-            expect(e).to.eql(null);
-            expect(res.body.error).not.to.be(true);
-            expect(res.body.rate).to.be(50);
+            expect(res.body.saving_rate).to.be(50);
+            expect(res.body.loan_rate).to.be(10);
+            expect(res.body.pocket_money_amount).to.be(5);
+            expect(res.body.pocket_money_day).to.be(3);
 
             done();
         });

@@ -6,7 +6,8 @@ var _ = require('underscore');
  */
 function Account(db){
 
-    var self = this;
+    var self = this,
+        allowedUpdates = ['loan_rate', 'saving_rate', 'pockey_money_amount', 'pocket_money_day']; //Fields allowed to be set during update
 
     this.createAccount = function(req, res) {
 
@@ -71,42 +72,33 @@ function Account(db){
 
     };
 
-    this.setSavingRate = function(req, res) {
+    this.updateAccount = function(req, res) {
 
         req.checkBody('id', 'Invalid id').notEmpty();
-        req.checkBody('rate', 'No rate specified').notEmpty();
-
         self.handleErrors(req.validationErrors(), res);
 
         var collection = db.collection('account');
 
-        collection.updateById(req.body.id, {saving_rate:req.body.rate}, function(e, result){
+        var id = req.body.id;
+        var update = _.pick(req.body, allowedUpdates); //Filter update fields
+
+        delete update.id;
+
+        collection.updateById(id, { $set : update }, function(e, result){
             if (e) return next(e);
 
-             if(result === 1)
-                res.json({"rate": req.body.rate});
-            else
+             if(result === 1){
+                collection.findById(id, function(e, result){
+
+                    if(result)
+                        res.json(result);
+                });
+
+            }else{
                 res.json(404, {"error": 'Invalid account id'});
+            }
         });
-    };
 
-    this.setLoanRate = function(req, res) {
-
-        req.checkBody('id', 'Invalid id').notEmpty();
-        req.checkBody('rate', 'No rate specified').notEmpty();
-
-        self.handleErrors(req.validationErrors(), res);
-
-        var collection = db.collection('account');
-
-        collection.updateById(req.body.id, {loan_rate:req.body.rate}, function(e, result){
-            if (e) return next(e);
-
-             if(result === 1)
-                res.json({"rate": req.body.rate});
-            else
-                res.json(404, {"error": 'Invalid account id'});
-        });
     };
 
     /**
