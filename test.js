@@ -95,6 +95,19 @@ describe('Bank of Dad API', function(){
         });
     });
 
+    it('increment account', function(done){
+        superagent.post('http://localhost:3000/account/increment/')
+        .send({
+            days: 15,
+            id: id
+        })
+        .end(function(e,res){
+            expect(e).to.eql(null);
+            // done();
+        });
+    });
+
+
     it('delete account fail validation', function(done){
         superagent.del('http://localhost:3000/account')
         .send({

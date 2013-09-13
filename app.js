@@ -56,6 +56,7 @@ app.post('/account', accountHandler.createAccount);
 app.del('/account', accountHandler.deleteAccount);
 app.get('/account/:id', accountHandler.readAccount);
 app.put('/account', accountHandler.updateAccount);
+app.post('/account/increment/', accountHandler.incrementAccount);
 
 //Transaction routes
 app.post('/transaction', transactionHandler.createTransaction);

@@ -1,4 +1,6 @@
-var _ = require('underscore');
+var _ = require('underscore'),
+    moment = require('moment'),
+    async = require('async');
 
 /**
  * Account based route handling
@@ -8,6 +10,8 @@ function Account(db){
 
     var self = this,
         allowedUpdates = ['loan_rate', 'saving_rate', 'pocket_money_amount', 'pocket_money_day', 'goal']; //Fields allowed to be set during update
+
+    var collection = db.collection('account');
 
     /**
      * Create account
@@ -24,8 +28,6 @@ function Account(db){
 
         if(self.handleErrors(req.validationErrors(), res))
             return;
-
-        var collection = db.collection('account');
 
         var toInsert = {
             "parent_name": req.body.parent_name,
@@ -56,8 +58,6 @@ function Account(db){
         if(self.handleErrors(req.validationErrors(), res))
             return;
 
-        var collection = db.collection('account');
-
         collection.removeById(req.body.id, {}, function(e, results){
             if (e) return next(e);
 
@@ -82,8 +82,6 @@ function Account(db){
 
         if(self.handleErrors(req.validationErrors(), res))
             return;
-
-        var collection = db.collection('account');
 
         collection.byId(req.params.id, function(e, result){
             if (e) return next(e);
@@ -111,8 +109,6 @@ function Account(db){
         if(self.handleErrors(req.validationErrors(), res))
             return;
 
-        var collection = db.collection('account');
-
         var id = req.body.id;
         var update = _.pick(req.body, allowedUpdates); //Filter update fields
 
@@ -133,6 +129,171 @@ function Account(db){
             }
         });
 
+    };
+
+    /**
+     * Increment an account date by specified days
+     * @param  Object   req  Express Request object
+     * @param  Object   res  Express Request object
+     * @param  Function next Goto next middleware/route
+     * @return void
+     */
+    this.incrementAccount = function(req, res, next) {
+
+        req.checkBody('days', 'Invalid days parameter').notEmpty();
+        req.checkBody('days', 'Invalid days parameter').isInt();
+        req.checkBody('id', 'Invalid id').notEmpty();
+
+        var days = req.body.days;
+
+        if(self.handleErrors(req.validationErrors(), res))
+            return;
+
+        collection.byId(req.body.id, function(e, account){
+            if (e) return next(e);
+
+            if(_.isEmpty(account))
+                return res.json(404, {"error": 'Invalid account id'});
+
+            //Do each task in order
+            async.series([
+                function(callback){
+                    self.calculatePocketMoney(account, days, callback);
+                },
+                function(callback){
+                    self.calculateInterest(account, days, callback);
+                },
+                function(callback){
+                    self.updateCurrentDate(account, days, callback);
+                }
+            ], function(){
+                collection.byId(req.body.id, function(e, updatedAccount){
+                    res.json(updatedAccount);
+                });
+            });
+        });
+
+    };
+
+    /**
+     * Calculate Pocket money
+     * - Every time we pass pocket money day add a pocket money transaction
+     * @param  Object   account
+     * @param  int   days
+     * @param  Function callback
+     * @return void
+     */
+    this.calculatePocketMoney = function(account, days, callback) {
+
+        var start = moment(account.current_date),
+            queue = async.queue(self.addTransaction, 1); //Use an async queue to manage transaction callbacks
+
+        for (var i = days; i >= 0; i--) {
+            start.add('days', 1);
+            if(parseInt(account.pocket_money_day,10) === parseInt(start.format('d'), 10)){
+
+
+                //Add Pocketmoney transaction
+                queue.push({
+                    "accountId": account.id,
+                    "amount": account.pocket_money_amount,
+                    "description": 'Pocket Money (auto)',
+                    "deposit": true,
+                    "withdrawal": false,
+                    "date": start.clone().toDate()
+                });
+
+                console.log(start.toDate());
+            }
+        }
+
+        if(queue.length() < 1)
+            callback();
+
+        //When the queue's finished
+        queue.drain = function(){
+            callback();
+        };
+    };
+
+    /**
+     * Calculate interest money
+     * - Every time we pass monday add interest
+     * @param  Object   account
+     * @param  int   days
+     * @param  Function callback
+     * @return void
+     */
+    this.calculateInterest = function(account, days, callback) {
+
+        callback();
+
+        // var start = moment(account.current_date),
+        //     queue = async.queue(self.addTransaction, 1); //Use an async queue to manage transaction callbacks
+
+        // for (var i = days; i >= 0; i--) {
+
+        //     if(parseInt(account.pocket_money_day,10) === parseInt(start.add('days', 1).format('d'), 10)){
+
+        //         //Add Pocketmoney transaction
+        //         queue.push({
+        //             "accountId": account.id,
+        //             "amount": account.pocket_money_amount,
+        //             "description": 'Pocket Money (auto)',
+        //             "deposit": false,
+        //             "withdrawal": true,
+        //             "date": start.toDate()
+        //         });
+        //     }
+        // }
+
+        // //When the queue's finished
+        // queue.drain = function(){
+        //     callback();
+        // };
+    };
+
+    /**
+     * Update the account's current date by x days
+     * @param  Object   account
+     * @param  int   days
+     * @param  Function callback
+     * @return void
+     */
+    this.updateCurrentDate = function(account, days, callback){
+
+        var start = moment(account.current_date);
+        start.add('days', days);
+
+        var update = {current_date: start.toDate()};
+
+        collection.updateById(account.id, { $set : update }, function(e, result){
+            if (e) return next(e);
+
+            callback();
+        });
+    };
+
+    /**
+     * Add transaction to acccount
+     * - For use as a ASYNC queue worker
+     * @param Object   transaction
+     * @param Function callback
+     */
+    this.addTransaction = function(transaction, callback) {
+
+        var accountId = transaction.accountId;
+
+        console.log(transaction);
+
+        delete transaction.accountId;
+
+        collection.updateById(accountId, { $push: { "transactions": transaction }}, function(e, update){
+            if (e) return callback(e);
+
+            callback();
+
+        });
     };
 
     /**
