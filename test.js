@@ -115,6 +115,9 @@ describe('Bank of Dad API', function(){
 
 
     /** TRANSACTION **/
+
+    var idForTrans;
+
     it('create transaction', function(done){
 
         superagent.post('http://localhost:3000/account')
@@ -124,11 +127,11 @@ describe('Bank of Dad API', function(){
         })
         .end(function(e,res){
 
-            id = res.body.id;
+            idForTrans = res.body.id;
 
             superagent.post('http://localhost:3000/transaction')
             .send({
-                account_id: id,
+                account_id: idForTrans,
                 amount: 10,
                 description: "A test payment deposit",
                 deposit: 0,
@@ -136,17 +139,48 @@ describe('Bank of Dad API', function(){
             })
             .end(function(e,res){
 
-                console.log(res.body);
-
                 expect(e).to.eql(null);
                 expect(res.body.error).not.to.be(true);
                 expect(res.body.transactions[0].amount).to.be(10);
                 expect(res.body.transactions[0].description).to.be("A test payment deposit");
-                expect(res.body.transactions[0].deposit).to.be(1);
-                expect(res.body.transactions[0].withdrawal).to.be(0);
+                expect(res.body.transactions[0].deposit).to.be(false);
+                expect(res.body.transactions[0].withdrawal).to.be(true);
 
                 done();
             });
+        });
+
+    });
+
+    it('read transaction validation fail', function(done){
+
+         superagent.get('http://localhost:3000/transaction/invalidid')
+        .send()
+        .end(function(e,res){
+
+            expect(e).to.eql(null);
+            expect(res.body.error).to.be("Invalid account id");
+
+            done();
+        });
+
+    });
+
+    it('read transaction', function(done){
+
+        superagent.get('http://localhost:3000/transaction/' + idForTrans)
+        .send()
+        .end(function(e,res){
+
+            expect(e).to.eql(null);
+            expect(res.body.error).not.to.be(true);
+
+            expect(res.body.transactions[0].amount).to.be(10);
+            expect(res.body.transactions[0].description).to.be("A test payment deposit");
+            expect(res.body.transactions[0].deposit).to.be(false);
+            expect(res.body.transactions[0].withdrawal).to.be(true);
+
+            done();
         });
 
     });

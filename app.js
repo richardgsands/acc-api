@@ -59,6 +59,7 @@ app.put('/account', accountHandler.updateAccount);
 
 //Transaction routes
 app.post('/transaction', transactionHandler.createTransaction);
+app.get('/transaction/:id', transactionHandler.getTransactions);
 
 
 

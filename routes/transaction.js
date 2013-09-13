@@ -10,7 +10,7 @@ function Transaction(db){
 
     var collection = db.collection('account');
 
-    this.createTransaction = function(req, res) {
+    this.createTransaction = function(req, res, next) {
 
         req.checkBody('account_id', 'You must specify an account').notEmpty();
         req.checkBody('amount', 'You must specify an amount').notEmpty();
@@ -32,18 +32,18 @@ function Transaction(db){
             "date": new Date()
         };
 
-        
-        console.log(newTransaction);
-
-
-        collection.byId(req.body.account_id, function(err, result) {
+        collection.byId(req.body.account_id, function(e, result) {
+            if (e) return next(e);
 
             if(!_.isEmpty(result)){
 
-                collection.updateById(result.id, { $push: { "transactions": newTransaction }}, function(err, update){
+                collection.updateById(result.id, { $push: { "transactions": newTransaction }}, function(e, update){
+                    if (e) return next(e);
 
                     if(update == 1){
-                        collection.findById(result.id, function(err, updated){
+                        collection.findById(result.id, function(e, updated){
+                            if (e) return next(e);
+
                             if(!_.isEmpty(updated))
                                 res.json(updated);
                             else
@@ -59,7 +59,22 @@ function Transaction(db){
             }
 
         });
+    };
 
+    this.getTransactions = function(req, res, next) {
+
+        req.assert('id', 'Invalid account id').notEmpty();
+
+        self.handleErrors(req.validationErrors(), res);
+
+        collection.findById(req.params.id, {transactions:true, _id:false}, function(e, result) {
+            if (e) return next(e);
+
+            if(!_.isEmpty(result))
+                res.json(result);
+            else
+                res.json(404, {"error": 'Invalid account id'});
+        });
     };
 
     /**
