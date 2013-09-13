@@ -7,7 +7,7 @@ var _ = require('underscore');
 function Account(db){
 
     var self = this,
-        allowedUpdates = ['loan_rate', 'saving_rate', 'pocket_money_amount', 'pocket_money_day']; //Fields allowed to be set during update
+        allowedUpdates = ['loan_rate', 'saving_rate', 'pocket_money_amount', 'pocket_money_day', 'goal']; //Fields allowed to be set during update
 
     /**
      * Create account
@@ -30,7 +30,8 @@ function Account(db){
         var toInsert = {
             "parent_name": req.body.parent_name,
             "child_name": req.body.child_name,
-            "start_date": new Date()
+            "start_date": new Date(),
+            "current_date": new Date()
         };
 
         collection.insert(toInsert, {}, function(e, results){

@@ -73,14 +73,23 @@ describe('Bank of Dad API', function(){
             loan_rate: 10,
             pocket_money_amount: 5,
             pocket_money_day: 3,
+            goal: {
+                name: "My new bike",
+                value: 150,
+                type: "bike"
+            }
         })
         .end(function(e,res){
+
             expect(e).to.eql(null);
             expect(res.body.error).not.to.be(true);
             expect(res.body.saving_rate).to.be(50);
             expect(res.body.loan_rate).to.be(10);
             expect(res.body.pocket_money_amount).to.be(5);
             expect(res.body.pocket_money_day).to.be(3);
+            expect(res.body.goal.name).to.be("My new bike");
+            expect(res.body.goal.value).to.be(150);
+            expect(res.body.goal.type).to.be("bike");
 
             done();
         });
