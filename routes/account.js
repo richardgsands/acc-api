@@ -9,7 +9,7 @@ function Account(db){
     var self = this,
         allowedUpdates = ['loan_rate', 'saving_rate', 'pocket_money_amount', 'pocket_money_day']; //Fields allowed to be set during update
 
-    this.createAccount = function(req, res) {
+    this.createAccount = function(req, res, next) {
 
         //Validate post fields
         req.checkBody('parent_name', 'Invalid parent name').notEmpty();
@@ -33,7 +33,7 @@ function Account(db){
 
     };
 
-    this.deleteAccount = function(req, res) {
+    this.deleteAccount = function(req, res, next) {
 
         req.checkBody('id', 'Invalid id').notEmpty();
 
@@ -52,7 +52,7 @@ function Account(db){
 
     };
 
-    this.readAccount =  function(req, res) {
+    this.readAccount =  function(req, res, next) {
 
         req.assert('id', 'Invalid id').notEmpty();
 
@@ -72,7 +72,7 @@ function Account(db){
 
     };
 
-    this.updateAccount = function(req, res) {
+    this.updateAccount = function(req, res, next) {
 
         req.checkBody('id', 'Invalid id').notEmpty();
         self.handleErrors(req.validationErrors(), res);

@@ -38,17 +38,13 @@ var app = express();
 app.use(express.bodyParser());
 app.use(expressValidator());
 
-app.use(function(err, req, res, next) {
-    res.send(500, {status:500, message: 'internal error', type:'internal'});
-});
-
 /**
  * Home page
  * @param  object req
  * @param  object res
  * @return object     Response
  */
-app.get('/', function(req, res){
+app.get('/', function(req, res, next){
     res.send('Bank of Dad API');
 });
 
@@ -63,6 +59,13 @@ app.put('/account', accountHandler.updateAccount);
 
 //Transaction routes
 app.post('/transaction', transactionHandler.createTransaction);
+
+
+
+app.use(function(err, req, res, next) {
+    res.send(500, {status:500, message: err.toString() || 'internal error', type:'internal'});
+});
+
 
 app.listen(3000);
 console.log('Listening on port 3000');
