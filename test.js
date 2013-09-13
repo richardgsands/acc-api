@@ -1,5 +1,6 @@
 var superagent = require('superagent'),
     expect = require('expect.js'),
+    async = require('async'),
     moment = require('moment');
 
 
@@ -187,7 +188,7 @@ describe('Bank of Dad API', function(){
         .end(function(e,res){
 
             expect(e).to.eql(null);
-            expect(res.body.error).to.be("Invalid account id");
+            expect(res.body.error).to.be(true);
 
             done();
         });
@@ -213,35 +214,71 @@ describe('Bank of Dad API', function(){
 
     });
 
-    // it('read transactions with date range', function(done){
+    it('read transactions with date range', function(done){
 
+        var count = 0;
+        var queue = async.whilst(function(){
+            return count < 101;
+        }, function(callback){
+            count++;
+            insertTransaction(count, idForTrans, callback);
+        }, function(){
+            console.log('Inserted ' + (count - 1) + ' transactions');
 
-    //     superagent.post('http://localhost:3000/transaction')
-    //         .send({
-    //             account_id: idForTrans,
-    //             amount: 10,
-    //             description: "A test payment deposit",
-    //             deposit: 0,
-    //             withdrawal: 1
-    //         })
+            //A 50 day range.
+            var startDate = moment().weekday(+25);
+            var endDate = moment().weekday(+75);
+            var format = 'DD-MM-YYYY';
 
-    // });
-    // 
-    //  
-    
+            superagent.get('http://localhost:3000/transaction/' + idForTrans + '/' + startDate.format(format) + '/' + endDate.format(format))
+            .send()
+            .end(function(e,res){
+
+                expect(e).to.eql(null);
+                expect(res.body.error).not.to.be(true);
+
+                expect(res.body.transactions.length).to.be(50);
+
+                done();
+            });
+
+        });
+
+    });
+
 
     //CLEAN UP
-    it('delete transaction account', function(done){
-        superagent.del('http://localhost:3000/account')
-        .send({
-            id: idForTrans
-        })
-        .end(function(e,res){
-            expect(e).to.eql(null);
-            expect(res.body.error).not.to.be(true);
-            expect(res.body.deleted).to.not.be.empty();
+    // it('delete transaction account', function(done){
+    //     superagent.del('http://localhost:3000/account')
+    //     .send({
+    //         id: idForTrans
+    //     })
+    //     .end(function(e,res){
+    //         expect(e).to.eql(null);
+    //         expect(res.body.error).not.to.be(true);
+    //         expect(res.body.deleted).to.not.be.empty();
 
-            done();
-        });
-    });
+    //         done();
+    //     });
+    // });
 });
+
+
+function insertTransaction(x, idForTrans, callback){
+
+    var dateInFuture = moment().weekday(x),
+        deposit = Math.round(Math.random() * 1);
+
+    superagent.post('http://localhost:3000/transaction')
+    .send({
+        account_id: idForTrans,
+        amount: Math.floor(Math.random() * (100 - 10 + 1)) + 10,
+        description: "A test payment deposit with custom date no: " + x,
+        deposit: deposit,
+        withdrawal: !deposit,
+        date: dateInFuture.toDate()
+    }).end(function(){
+        callback();
+    });
+
+}

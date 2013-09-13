@@ -1,4 +1,5 @@
 var _ = require('underscore'),
+    ObjectID = require('mongoskin').ObjectID,
     moment = require('moment');
 
 /**
@@ -66,15 +67,33 @@ function Transaction(db){
     this.getTransactions = function(req, res, next) {
 
         req.assert('id', 'Invalid account id').notEmpty();
+        req.assert('id', 'Invalid account id').is("^[0-9a-fA-F]{24}$"); //make sure it looks like a mongo objectID
 
         if(self.handleErrors(req.validationErrors(), res))
             return;
 
-        collection.findById(req.params.id, {transactions:true, _id:false}, function(e, result) {
+        var query = {
+            _id: ObjectID.createFromHexString(req.params.id),
+            "transactions.date": {}
+        };
+
+        if(!_.isEmpty(req.params.date_start))
+            query["transactions.date"].$gte = moment(req.params.date_start, "MM-DD-YYYY").toDate();
+
+        if(!_.isEmpty(req.params.date_end))
+            query["transactions.date"].$lte = moment(req.params.date_end, "MM-DD-YYYY").toDate();
+
+        if(_.isEmpty(query["transactions.date"]))
+            delete query["transactions.date"];
+
+
+        collection.find(query, {transactions:true, _id:false}).toArray(function(e, result) {
             if (e) return next(e);
 
+            console.log(result[0].transactions.length);
+
             if(!_.isEmpty(result))
-                res.json(result);
+                res.json(result[0]);
             else
                 res.json(404, {"error": 'Invalid account id'});
         });
