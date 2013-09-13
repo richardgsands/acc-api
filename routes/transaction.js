@@ -12,6 +12,13 @@ function Transaction(db){
 
     var collection = db.collection('account');
 
+    /**
+     * Create transaction against an account id
+     * @param  Object   req  Express Request object
+     * @param  Object   res  Express Request object
+     * @param  Function next Goto next middleware/route
+     * @return void
+     */
     this.createTransaction = function(req, res, next) {
 
         req.checkBody('account_id', 'You must specify an account').notEmpty();
@@ -64,6 +71,15 @@ function Transaction(db){
         });
     };
 
+    /**
+     * Get transactions based on account id.
+     * - Takes optional date range. If specified a mongo aggreate query is used.
+     * @todo  Add account id validation to
+     * @param  Object   req  Express Request object
+     * @param  Object   res  Express Request object
+     * @param  Function next Goto next middleware/route
+     * @return void
+     */
     this.getTransactions = function(req, res, next) {
 
         req.assert('id', 'Invalid account id').notEmpty();

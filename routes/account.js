@@ -9,6 +9,13 @@ function Account(db){
     var self = this,
         allowedUpdates = ['loan_rate', 'saving_rate', 'pocket_money_amount', 'pocket_money_day']; //Fields allowed to be set during update
 
+    /**
+     * Create account
+     * @param  Object   req  Express Request object
+     * @param  Object   res  Express Request object
+     * @param  Function next Goto next middleware/route
+     * @return void
+     */
     this.createAccount = function(req, res, next) {
 
         //Validate post fields
@@ -34,6 +41,13 @@ function Account(db){
 
     };
 
+    /**
+     * Delete account
+     * @param  Object   req  Express Request object
+     * @param  Object   res  Express Request object
+     * @param  Function next Goto next middleware/route
+     * @return void
+     */
     this.deleteAccount = function(req, res, next) {
 
         req.checkBody('id', 'Invalid id').notEmpty();
@@ -54,6 +68,13 @@ function Account(db){
 
     };
 
+    /**
+     * Read account
+     * @param  Object   req  Express Request object
+     * @param  Object   res  Express Request object
+     * @param  Function next Goto next middleware/route
+     * @return void
+     */
     this.readAccount =  function(req, res, next) {
 
         req.assert('id', 'Invalid id').notEmpty();
@@ -75,6 +96,13 @@ function Account(db){
 
     };
 
+    /**
+     * Update account
+     * @param  Object   req  Express Request object
+     * @param  Object   res  Express Request object
+     * @param  Function next Goto next middleware/route
+     * @return void
+     */
     this.updateAccount = function(req, res, next) {
 
         req.checkBody('id', 'Invalid id').notEmpty();
