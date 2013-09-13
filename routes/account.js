@@ -15,7 +15,8 @@ function Account(db){
         req.checkBody('parent_name', 'Invalid parent name').notEmpty();
         req.checkBody('child_name', 'Invalid child name').notEmpty();
 
-        self.handleErrors(req.validationErrors(), res);
+        if(self.handleErrors(req.validationErrors(), res))
+            return;
 
         var collection = db.collection('account');
 
@@ -37,7 +38,8 @@ function Account(db){
 
         req.checkBody('id', 'Invalid id').notEmpty();
 
-        self.handleErrors(req.validationErrors(), res);
+        if(self.handleErrors(req.validationErrors(), res))
+            return;
 
         var collection = db.collection('account');
 
@@ -56,7 +58,8 @@ function Account(db){
 
         req.assert('id', 'Invalid id').notEmpty();
 
-        self.handleErrors(req.validationErrors(), res);
+        if(self.handleErrors(req.validationErrors(), res))
+            return;
 
         var collection = db.collection('account');
 
@@ -75,7 +78,9 @@ function Account(db){
     this.updateAccount = function(req, res, next) {
 
         req.checkBody('id', 'Invalid id').notEmpty();
-        self.handleErrors(req.validationErrors(), res);
+
+        if(self.handleErrors(req.validationErrors(), res))
+            return;
 
         var collection = db.collection('account');
 
@@ -111,7 +116,9 @@ function Account(db){
 
         if (errors) {
             res.json(400, {"error": true, "messages": errors});
-            return;
+            return true;
+        }else{
+            return false;
         }
     };
 }

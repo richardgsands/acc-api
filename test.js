@@ -1,5 +1,6 @@
 var superagent = require('superagent'),
-    expect = require('expect.js');
+    expect = require('expect.js'),
+    moment = require('moment');
 
 
 describe('Bank of Dad API', function(){
@@ -152,6 +153,33 @@ describe('Bank of Dad API', function(){
 
     });
 
+    it('create transaction with custom date', function(done){
+
+        var dateInFuture = moment().weekday(2);
+
+        superagent.post('http://localhost:3000/transaction')
+        .send({
+            account_id: idForTrans,
+            amount: 10,
+            description: "A test payment deposit with custom date",
+            deposit: 0,
+            withdrawal: 1,
+            date: dateInFuture.toDate()
+        })
+        .end(function(e,res){
+
+            expect(e).to.eql(null);
+            expect(res.body.error).not.to.be(true);
+            expect(res.body.transactions[1].amount).to.be(10);
+            expect(res.body.transactions[1].description).to.be("A test payment deposit with custom date");
+            expect(res.body.transactions[1].deposit).to.be(false);
+            expect(res.body.transactions[1].withdrawal).to.be(true);
+            expect(moment(res.body.transactions[1].date).isSame(dateInFuture)).to.be(true);
+
+            done();
+        });
+    });
+
     it('read transaction validation fail', function(done){
 
          superagent.get('http://localhost:3000/transaction/invalidid')
@@ -185,4 +213,35 @@ describe('Bank of Dad API', function(){
 
     });
 
+    // it('read transactions with date range', function(done){
+
+
+    //     superagent.post('http://localhost:3000/transaction')
+    //         .send({
+    //             account_id: idForTrans,
+    //             amount: 10,
+    //             description: "A test payment deposit",
+    //             deposit: 0,
+    //             withdrawal: 1
+    //         })
+
+    // });
+    // 
+    //  
+    
+
+    //CLEAN UP
+    it('delete transaction account', function(done){
+        superagent.del('http://localhost:3000/account')
+        .send({
+            id: idForTrans
+        })
+        .end(function(e,res){
+            expect(e).to.eql(null);
+            expect(res.body.error).not.to.be(true);
+            expect(res.body.deleted).to.not.be.empty();
+
+            done();
+        });
+    });
 });

@@ -1,4 +1,5 @@
-var _ = require('underscore');
+var _ = require('underscore'),
+    moment = require('moment');
 
 /**
  * Transaction based route handling
@@ -22,14 +23,15 @@ function Transaction(db){
         req.body.deposit = (req.body.deposit === undefined) ? false : req.body.deposit;
         req.body.withdrawal = (req.body.withdrawal === undefined) ? false : req.body.withdrawal;
 
-        self.handleErrors(req.validationErrors(), res);
+        if(self.handleErrors(req.validationErrors(), res))
+            return;
 
         var newTransaction = {
             "amount": req.body.amount,
             "description": req.body.description,
             "deposit": req.body.deposit,
             "withdrawal": req.body.withdrawal,
-            "date": new Date()
+            "date": moment(req.body.date).toDate() || new Date() // set detfault to now
         };
 
         collection.byId(req.body.account_id, function(e, result) {
@@ -65,7 +67,8 @@ function Transaction(db){
 
         req.assert('id', 'Invalid account id').notEmpty();
 
-        self.handleErrors(req.validationErrors(), res);
+        if(self.handleErrors(req.validationErrors(), res))
+            return;
 
         collection.findById(req.params.id, {transactions:true, _id:false}, function(e, result) {
             if (e) return next(e);
@@ -87,7 +90,9 @@ function Transaction(db){
 
         if (errors) {
             res.json(400, {"error": true, "messages": errors});
-            return;
+            return true;
+        }else{
+            return false;
         }
     };
 }
