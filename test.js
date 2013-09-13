@@ -239,6 +239,9 @@ describe('Bank of Dad API', function(){
 
                 expect(res.body.transactions.length).to.be(50);
 
+                //The first item should be the 25th to be inserted. Because we're removing the first 25 days worth and ordering by date.
+                expect(res.body.transactions[0].description).to.be("A test payment deposit with custom date no: 25");
+
                 done();
             });
 
@@ -248,19 +251,19 @@ describe('Bank of Dad API', function(){
 
 
     //CLEAN UP
-    // it('delete transaction account', function(done){
-    //     superagent.del('http://localhost:3000/account')
-    //     .send({
-    //         id: idForTrans
-    //     })
-    //     .end(function(e,res){
-    //         expect(e).to.eql(null);
-    //         expect(res.body.error).not.to.be(true);
-    //         expect(res.body.deleted).to.not.be.empty();
+    it('delete transaction account', function(done){
+        superagent.del('http://localhost:3000/account')
+        .send({
+            id: idForTrans
+        })
+        .end(function(e,res){
+            expect(e).to.eql(null);
+            expect(res.body.error).not.to.be(true);
+            expect(res.body.deleted).to.not.be.empty();
 
-    //         done();
-    //     });
-    // });
+            done();
+        });
+    });
 });
 
 

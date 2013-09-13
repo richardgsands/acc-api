@@ -72,31 +72,42 @@ function Transaction(db){
         if(self.handleErrors(req.validationErrors(), res))
             return;
 
-        var query = {
-            _id: ObjectID.createFromHexString(req.params.id),
-            "transactions.date": {}
-        };
+        if(!_.isEmpty(req.params.date_start) && !_.isEmpty(req.params.date_end)){
 
-        if(!_.isEmpty(req.params.date_start))
-            query["transactions.date"].$gte = moment(req.params.date_start, "MM-DD-YYYY").toDate();
+            var pipeline = [
+                { $match: {_id: ObjectID.createFromHexString(req.params.id) }},
+                { $unwind: '$transactions'},
+            ];
 
-        if(!_.isEmpty(req.params.date_end))
-            query["transactions.date"].$lte = moment(req.params.date_end, "MM-DD-YYYY").toDate();
+            if(!_.isEmpty(req.params.date_start))
+                pipeline.push({'$match': {'transactions.date': { '$gte': moment(req.params.date_start, "DD-MM-YYYY").toDate() }}});
 
-        if(_.isEmpty(query["transactions.date"]))
-            delete query["transactions.date"];
+            if(!_.isEmpty(req.params.date_end))
+                pipeline.push({'$match': {'transactions.date': { '$lte': moment(req.params.date_end, "DD-MM-YYYY").toDate() }}});
+
+            pipeline.push({ '$sort': {'transactions.date':1} });
+
+            collection.aggregate(pipeline, function(e, result){
+                if (e) return next(e);
+
+                res.json({"transactions": _.pluck(result, 'transactions')});
+            });
 
 
-        collection.find(query, {transactions:true, _id:false}).toArray(function(e, result) {
-            if (e) return next(e);
+        }else{
 
-            console.log(result[0].transactions.length);
+            collection.find({_id: ObjectID.createFromHexString(req.params.id)}, {transactions:true, _id:false}).toArray(function(e, result) {
+                if (e) return next(e);
 
-            if(!_.isEmpty(result))
-                res.json(result[0]);
-            else
-                res.json(404, {"error": 'Invalid account id'});
-        });
+                console.log(result[0].transactions.length);
+
+                if(!_.isEmpty(result))
+                    res.json(result[0]);
+                else
+                    res.json(404, {"error": 'Invalid account id'});
+            });
+        }
+
     };
 
     /**
