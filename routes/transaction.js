@@ -75,6 +75,7 @@ function Transaction(db){
      * Get transactions based on account id.
      * - Takes optional date range. If specified a mongo aggreate query is used.
      * @todo  Add account id validation to
+     * @todo  Validate filter/date params
      * @param  Object   req  Express Request object
      * @param  Object   res  Express Request object
      * @param  Function next Goto next middleware/route
@@ -88,7 +89,7 @@ function Transaction(db){
         if(self.handleErrors(req.validationErrors(), res))
             return;
 
-        if(!_.isEmpty(req.params.date_start) && !_.isEmpty(req.params.date_end)){
+        if(!_.isEmpty(req.params.type) && req.params.type !==  'all' || !_.isEmpty(req.params.date_start) || !_.isEmpty(req.params.date_end)){
 
             var pipeline = [
                 { $match: {_id: ObjectID.createFromHexString(req.params.id) }},
@@ -101,7 +102,15 @@ function Transaction(db){
             if(!_.isEmpty(req.params.date_end))
                 pipeline.push({'$match': {'transactions.date': { '$lte': moment(req.params.date_end, "DD-MM-YYYY").toDate() }}});
 
+            if(!_.isEmpty(req.params.type) && req.params.type === 'withdrawal'){
+                pipeline.push({'$match': {'transactions.withdrawal': true}});
+            }else if(!_.isEmpty(req.params.type) && req.params.type === 'withdrawal'){
+                pipeline.push({'$match': {'transactions.deposit': true}});
+            }
+
             pipeline.push({ '$sort': {'transactions.date':1} });
+
+            console.log(pipeline);
 
             collection.aggregate(pipeline, function(e, result){
                 if (e) return next(e);

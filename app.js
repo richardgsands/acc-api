@@ -59,7 +59,7 @@ app.put('/account', accountHandler.updateAccount);
 
 //Transaction routes
 app.post('/transaction', transactionHandler.createTransaction);
-app.get('/transaction/:id/:date_start?/:date_end?', transactionHandler.getTransactions);
+app.get('/transaction/:id/:type?/:date_start?/:date_end?', transactionHandler.getTransactions);
 
 
 

@@ -1,6 +1,7 @@
 var superagent = require('superagent'),
     expect = require('expect.js'),
     async = require('async'),
+    _ = require('underscore'),
     moment = require('moment');
 
 
@@ -230,7 +231,7 @@ describe('Bank of Dad API', function(){
             var endDate = moment().weekday(+75);
             var format = 'DD-MM-YYYY';
 
-            superagent.get('http://localhost:3000/transaction/' + idForTrans + '/' + startDate.format(format) + '/' + endDate.format(format))
+            superagent.get('http://localhost:3000/transaction/' + idForTrans + '/all/' + startDate.format(format) + '/' + endDate.format(format))
             .send()
             .end(function(e,res){
 
@@ -249,6 +250,23 @@ describe('Bank of Dad API', function(){
 
     });
 
+    it('read transactions with type', function(done){
+
+        superagent.get('http://localhost:3000/transaction/' + idForTrans + '/withdrawal')
+            .send()
+            .end(function(e,res){
+
+                expect(e).to.eql(null);
+                expect(res.body.error).not.to.be(true);
+
+                //Check all data returned
+                _.each(res.body.transactions, function(item){
+                    expect(item.withdrawal).to.be(true);
+                });
+
+                done();
+            });
+    });
 
     //CLEAN UP
     it('delete transaction account', function(done){
@@ -264,6 +282,9 @@ describe('Bank of Dad API', function(){
             done();
         });
     });
+
+    /** **/
+
 });
 
 
