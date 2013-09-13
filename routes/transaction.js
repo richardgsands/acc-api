@@ -110,8 +110,6 @@ function Transaction(db){
 
             pipeline.push({ '$sort': {'transactions.date':1} });
 
-            console.log(pipeline);
-
             collection.aggregate(pipeline, function(e, result){
                 if (e) return next(e);
 
