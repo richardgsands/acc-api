@@ -1,5 +1,6 @@
 var _ = require('underscore'),
     moment = require('moment'),
+    ObjectID = require('mongoskin').ObjectID,
     async = require('async');
 
 /**
@@ -200,7 +201,7 @@ function Account(db){
                     "description": 'Pocket Money (auto)',
                     "deposit": true,
                     "withdrawal": false,
-                    "date": start.clone().toDate()
+                    "date": start.clone().toDate() //make sure you clone() so we get a new instance
                 });
 
                 console.log(start.toDate());
@@ -226,8 +227,8 @@ function Account(db){
      */
     this.calculateInterest = function(account, days, callback) {
 
-        callback();
 
+        self.getAccountBalance(account.id, account, callback);
         // var start = moment(account.current_date),
         //     queue = async.queue(self.addTransaction, 1); //Use an async queue to manage transaction callbacks
 
@@ -270,6 +271,23 @@ function Account(db){
         collection.updateById(account.id, { $set : update }, function(e, result){
             if (e) return next(e);
 
+            callback();
+        });
+    };
+
+    /**
+     * [getAccountBalance description]
+     * @param  {[type]}   account  [description]
+     * @param  {[type]}   days     [description]
+     * @param  {Function} callback [description]
+     * @return {[type]}            [description]
+     */
+    this.getAccountBalance = function(accountId, callback){
+
+        console.log(accountId);
+
+        collection.find({_id: ObjectID.createFromHexString(accountId)}, {transactions : 1}, function(e, account){
+            console.log(account);
             callback();
         });
     };
