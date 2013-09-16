@@ -132,6 +132,27 @@ function Account(db){
     };
 
     /**
+     * Get accounts
+     * @param  Object   req  Express Request object
+     * @param  Object   res  Express Request object
+     * @param  Function next Goto next middleware/route
+     * @return void
+     */
+    this.getAccounts =  function(req, res, next) {
+
+        collection.find({}).toArray(function(e, result){
+            if (e) return next(e);
+
+            if(!_.isEmpty(result)){
+                res.json(result);
+            }else{
+                res.json(404, {"error": 'No account found'});
+            }
+        });
+
+    };
+
+    /**
      * Update account
      * @param  Object   req  Express Request object
      * @param  Object   res  Express Request object

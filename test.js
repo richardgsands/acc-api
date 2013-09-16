@@ -54,6 +54,18 @@ describe('Bank of Dad API', function(){
         });
     });
 
+    it('read account', function(done){
+        superagent.get('http://localhost:3000/account')
+        .send()
+        .end(function(e,res){
+            expect(e).to.eql(null);
+            expect(res.body.error).not.to.be(true);
+            expect(res.body).to.not.be.empty();
+
+            done();
+        });
+    });
+
     it('update account validation fail', function(done){
         superagent.put('http://localhost:3000/account')
         .send({
