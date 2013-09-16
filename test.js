@@ -112,10 +112,13 @@ describe('Bank of Dad API', function(){
             fake_current_date.add('days', 15);
             expect(fake_current_date.isSame(returned_date)).to.be(true);
 
-            //Check transactions entered
+            //Check transactions entered by description
             var returnedTransactions = _.pluck(res.body.transactions, 'description');
-            var expectedTransactions = [ 'Pocket Money (auto)', 'Pocket Money (auto)', 'Interest payment (auto)', 'Interest payment (auto)', 'Interest payment (auto)' ];
+            var expectedTransactions = [ 'Interest payment (auto)', 'Pocket Money (auto)', 'Interest payment (auto)', 'Pocket Money (auto)', 'Interest payment (auto)' ];
             expect(returnedTransactions).to.eql(expectedTransactions);
+
+            //Based on account's info above, balance should be made up for 2 £5 payments of pocket money, 3 interest payments if 0,0.05 and 0.1
+            expect(res.body.balance).to.be(10.15);
 
             done();
         });

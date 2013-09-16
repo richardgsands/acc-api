@@ -194,11 +194,11 @@ function Account(db){
             //Do each task in order
             async.series([
                 function(callback){
-                    self.calculatePocketMoney(account, days, callback);
+                    self.calculatePocketMoneyAndInterest(account, days, callback);
                 },
-                function(callback){
-                    self.calculateInterest(account, days, callback);
-                },
+                // function(callback){
+                //     self.calculateInterest(account, days, callback);
+                // },
                 function(callback){
                     self.updateCurrentDate(account, days, callback);
                 }
@@ -212,24 +212,30 @@ function Account(db){
     };
 
     /**
-     * Calculate Pocket money
+     * Calculate Pocket money and Interest
      * - Every time we pass pocket money day add a pocket money transaction
+     * - Every time we pass monday calculate interest
      * @param  Object   account
      * @param  int   days
      * @param  Function callback
      * @return void
      */
-    this.calculatePocketMoney = function(account, days, callback) {
+    this.calculatePocketMoneyAndInterest = function(account, days, callback) {
 
         var start = moment(account.current_date),
-            queue = async.queue(self.addTransaction, 1); //Use an async queue to manage transaction callbacks
+            queue = async.queue(self.addTransaction, 1),
+            balance = account.balance; //Use an async queue to manage transaction callbacks
 
+        //Step through days one by one
         for (var i = days; i >= 0; i--) {
+
+            //Increment date
             start.add('days', 1);
+
+            //It's pocket money day
             if(parseInt(account.pocket_money_day,10) === parseInt(start.format('d'), 10)){
 
-
-                //Add Pocketmoney transaction
+                //Add pocket money transaction
                 queue.push({
                     "accountId": account.id,
                     "amount": account.pocket_money_amount,
@@ -239,40 +245,12 @@ function Account(db){
                     "date": start.clone().toDate() //make sure you clone() so we get a new instance
                 });
 
+                //Update running balance
+                balance += account.pocket_money_amount;
+
             }
-        }
 
-        //If there are no transactions to add just move on
-        if(queue.length() < 1)
-            callback();
-
-        //When the queue's finished
-        queue.drain = function(){
-            callback();
-        };
-    };
-
-    /**
-     * Calculate interest money
-     * - Every time we pass monday add interest
-     * @param  Object   account
-     * @param  int   days
-     * @param  Function callback
-     * @return void
-     */
-    this.calculateInterest = function(account, days, callback) {
-
-        var start = moment(account.current_date),
-            queue = async.queue(self.addTransaction, 1), //Use an async queue to manage transaction callbacks
-            balance = account.balance,
-            interestRate,
-            interest;
-
-        //Increment through day by day
-        for (var i = days; i >= 0; i--) {
-            start.add('days', 1);
-
-            //If we pass a monday add interest
+            //It's monday so add some interest
             if(1 === parseInt(start.format('d'), 10)){
 
                 //Saving or Loan rate?
