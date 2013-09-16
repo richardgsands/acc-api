@@ -65,8 +65,6 @@ function Account(db){
         if(self.handleErrors(req.validationErrors(), res))
             return;
 
-        console.log(req.body.current_date);
-
         var toInsert = {
             "parent_name": req.body.parent_name,
             "child_name": req.body.child_name,
@@ -302,8 +300,6 @@ function Account(db){
                         "withdrawal": true,
                         "date": clone.toDate()
                     });
-
-                    console.log(clone.toDate());
 
                     //Update balance we've got so we don't need to query data again
                     balance -= interest;
