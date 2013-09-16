@@ -144,7 +144,14 @@ function Account(db){
             if (e) return next(e);
 
             if(!_.isEmpty(result)){
-                res.json(result);
+
+                var formatted = _.map(result, function(item){
+                item.id = item._id;
+                delete item._id;
+
+                return item;
+            });
+                res.json(formatted);
             }else{
                 res.json(404, {"error": 'No account found'});
             }
@@ -175,7 +182,7 @@ function Account(db){
             if (e) return next(e);
 
              if(result === 1){
-                collection.findById(id, function(e, result){
+                collection.byId(id, function(e, result){
 
                     if(result)
                         res.json(result);

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Bank of Dad - Test Console</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+
+    </head>
+    <body>
+        <div class="container">
+            <h1>Bank of Dad - Test Console</h1>
+            <div class="alert alert-success">
+            </div>
+            <hr />
+            <h2>Create account</h2>
+            <form class="create-account form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="parent">Parent Name:</label>
+                    <div class="controls">
+                        <input type="text" name="parent_name" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="child">Child Name:</label>
+                    <div class="controls">
+                        <input type="text" name="child_name" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn btn-primary">Create</button>
+                    </div>
+                </div>
+            </form>
+
+            <hr />
+            <h2>Update account</h2>
+            <form class="update-account form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="parent">Account:</label>
+                    <div class="controls">
+                        <select class="accounts-select" name="id">
+
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="parent">Loan rate:</label>
+                    <div class="controls">
+                        <input type="text" name="loan_rate" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="parent">Saving rate:</label>
+                    <div class="controls">
+                        <input type="text" name="saving_rate" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="parent">Pocket money amount:</label>
+                    <div class="controls">
+                        <input type="text" name="pocket_money_amount" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="parent">Pocket money day:</label>
+                    <div class="controls">
+                        <select name="pocket_money_day">
+                            <option value="0">Sunday</option>
+                            <option value="1">Monday</option>
+                            <option value="2">Tuesday</option>
+                            <option value="3">Wednesday</option>
+                            <option value="4">Thursday</option>
+                            <option value="5">Friday</option>
+                            <option value="6">Saturday</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script type="text/javascript" src="/js/bankofdad.js"></script>
+        <script type="text/javascript" src="/js/bankofdad_console.js"></script>
+    </body>
+</html>

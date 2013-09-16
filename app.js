@@ -16,18 +16,16 @@ var db = mongoskin.db('localhost:27017/bankofdad', {safe:true});
 //Setup Express
 var app = express();
 
-/**
- * Use body parser to extract body params
- */
+//Use body parser to extract body params
 app.use(express.bodyParser());
+//Use express validator to valid body params
 app.use(expressValidator());
 
-/**
- * Home page
- * @param  object req
- * @param  object res
- * @return object     Response
- */
+//Set up static file serving
+app.use('/test', express.static(__dirname + '/static'));
+app.use('/js', express.static(__dirname + '/static/js'));
+
+//Home page
 app.get('/', function(req, res, next){
     res.send('Bank of Dad API');
 });
@@ -39,6 +37,7 @@ var transactionHandler = new TransactionHandler(db);
 app.post('/account', accountHandler.createAccount);
 app.del('/account', accountHandler.deleteAccount);
 app.get('/account/:id', accountHandler.readAccount);
+app.get('/account', accountHandler.getAccounts);
 app.put('/account', accountHandler.updateAccount);
 app.post('/account/increment/', accountHandler.incrementAccount);
 
