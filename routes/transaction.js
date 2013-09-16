@@ -73,7 +73,7 @@ function Transaction(db){
 
     /**
      * Get transactions based on account id.
-     * - Takes optional date range. If specified a mongo aggreate query is used.
+     * - Takes optional date/type filters. If specified a mongo aggreate query is used. (http://docs.mongodb.org/manual/core/aggregation-introduction/)
      * @todo  Add account id validation to
      * @todo  Validate filter/date params
      * @param  Object   req  Express Request object
@@ -89,36 +89,44 @@ function Transaction(db){
         if(self.handleErrors(req.validationErrors(), res))
             return;
 
+        //If filters have been specified
         if(!_.isEmpty(req.params.type) && req.params.type !==  'all' || !_.isEmpty(req.params.date_start) || !_.isEmpty(req.params.date_end)){
 
+            //Init pipe line
             var pipeline = [
-                { $match: {_id: ObjectID.createFromHexString(req.params.id) }},
-                { $unwind: '$transactions'},
+                { $match: {_id: ObjectID.createFromHexString(req.params.id) }}, //Filter to just account specified
+                { $unwind: '$transactions'}, //Unwind/Explode transactions array (needed to query against individual queries)
             ];
 
+            //Date start filter
             if(!_.isEmpty(req.params.date_start))
                 pipeline.push({'$match': {'transactions.date': { '$gte': moment(req.params.date_start, "DD-MM-YYYY").toDate() }}});
 
+            //Date end filter
             if(!_.isEmpty(req.params.date_end))
                 pipeline.push({'$match': {'transactions.date': { '$lte': moment(req.params.date_end, "DD-MM-YYYY").toDate() }}});
 
+            //Type filter
             if(!_.isEmpty(req.params.type) && req.params.type === 'withdrawal'){
                 pipeline.push({'$match': {'transactions.withdrawal': true}});
             }else if(!_.isEmpty(req.params.type) && req.params.type === 'withdrawal'){
                 pipeline.push({'$match': {'transactions.deposit': true}});
             }
 
+            //Add sort at the end
             pipeline.push({ '$sort': {'transactions.date':1} });
 
             collection.aggregate(pipeline, function(e, result){
                 if (e) return next(e);
 
+                //Return just transactions
                 res.json({"transactions": _.pluck(result, 'transactions')});
             });
 
 
         }else{
 
+            //Simple transaction look up (no filters)
             collection.find({_id: ObjectID.createFromHexString(req.params.id)}, {transactions:true, _id:false}).toArray(function(e, result) {
                 if (e) return next(e);
 
