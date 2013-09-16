@@ -9,6 +9,41 @@ var _ = require('underscore'),
  */
 function Account(db){
 
+    /**
+     * Bind custon method to accout collection
+     * - Maps _id to id
+     * - Calcs balance
+     */
+    db.bind('account', {
+        byId: function(id, fn){
+
+            this.findById(id, function(err, result){
+
+                if(!_.isEmpty(result)){
+                    result.id = result._id;
+                    delete result._id;
+
+                    var balance = 0;
+
+                    _.each(result.transactions, function(item, index){
+
+                        //Check if we're adding or subtracting
+                        if(item.withdrawal)
+                            balance -= item.amount;
+                        else if(item.deposit)
+                            balance += item.amount;
+                    });
+
+                    result.balance = balance;
+
+                }
+
+                fn(err, result);
+            });
+
+        }
+    });
+
     var self = this,
         allowedUpdates = ['loan_rate', 'saving_rate', 'pocket_money_amount', 'pocket_money_day', 'goal']; //Fields allowed to be set during update
 
@@ -228,85 +263,79 @@ function Account(db){
     this.calculateInterest = function(account, days, callback) {
 
         var start = moment(account.current_date),
-            queue = async.queue(self.addTransaction, 1); //Use an async queue to manage transaction callbacks
+            queue = async.queue(self.addTransaction, 1), //Use an async queue to manage transaction callbacks
+            balance = account.balance,
+            interestRate,
+            interest;
 
+        //Increment through day by day
+        for (var i = days; i >= 0; i--) {
+            start.add('days', 1);
 
-        self.getAccountBalance(account.id, account, function(balance){
+            //If we pass a monday add interest
+            if(1 === parseInt(start.format('d'), 10)){
 
-            var interestRate;
-            var interest;
+                //Saving or Loan rate?
+                if(balance >= 0){
 
-            //Increment through day by day
-            for (var i = days; i >= 0; i--) {
-                start.add('days', 1);
+                    //Divide rate by 52 to get weekly rate
+                    interestRate = account.saving_rate / 52;
 
-                //If we pass a monday add interest
-                if(1 === parseInt(start.format('d'), 10)){
+                    //Calculate interest based on current balance
+                    interest = (balance / 100) * interestRate;
 
-                    //Saving or Loan rate?
-                    if(balance >= 0){
+                    //Round to 2 decimal places
+                    interest = Math.round(interest * 100) / 100;
 
-                        //Divide rate by 52 to get weekly rate
-                        interestRate = account.saving_rate / 52;
+                    //Add transaction to queue
+                    queue.push({
+                        "accountId": account.id,
+                        "amount": interest,
+                        "description": 'Interest payment (auto)',
+                        "deposit": true,
+                        "withdrawal": false,
+                        "date": start.clone().toDate()
+                    });
 
-                        //Calculate interest based on current balance
-                        interest = (balance / 100) * interestRate;
+                    //Update balance we've got so we don't need to query data again
+                    balance += interest;
 
-                        //Round to 2 decimal places
-                        interest = Math.round(interest * 100) / 100;
+                }else{
 
-                        //Add transaction to queue
-                        queue.push({
-                            "accountId": account.id,
-                            "amount": interest,
-                            "description": 'Interest payment (auto)',
-                            "deposit": true,
-                            "withdrawal": false,
-                            "date": start.clone().toDate()
-                        });
+                    //Divide rate by 52 to get weekly rate
+                    interestRate = account.loan_rate / 52;
 
-                        //Update balance we've got so we don't need to query data again
-                        balance += interest;
+                    //Calculate interest based on current balance
+                    interest = (balance / 100) * interestRate;
 
-                    }else{
+                    //Round to 2 decimal places
+                    interest = Math.round(interest * 100) / 100;
 
-                        //Divide rate by 52 to get weekly rate
-                        interestRate = account.loan_rate / 52;
+                    //Add transaction to queue
+                    queue.push({
+                        "accountId": account.id,
+                        "amount": interest,
+                        "description": 'Interest payment (auto)',
+                        "deposit": false,
+                        "withdrawal": true,
+                        "date": start.clone().toDate()
+                    });
 
-                        //Calculate interest based on current balance
-                        interest = (balance / 100) * interestRate;
-
-                        //Round to 2 decimal places
-                        interest = Math.round(interest * 100) / 100;
-
-                        //Add transaction to queue
-                        queue.push({
-                            "accountId": account.id,
-                            "amount": interest,
-                            "description": 'Interest payment (auto)',
-                            "deposit": false,
-                            "withdrawal": true,
-                            "date": start.clone().toDate()
-                        });
-
-                        //Update balance we've got so we don't need to query data again
-                        balance -= interest;
-                    }
-
+                    //Update balance we've got so we don't need to query data again
+                    balance -= interest;
                 }
+
             }
+        }
 
-            //If there are no transactions to add just move on
-            if(queue.length() < 1)
-                callback();
+        //If there are no transactions to add just move on
+        if(queue.length() < 1)
+            callback();
 
-            //When the queue's finished
-            queue.drain = function(){
-                callback();
-            };
-
-        });
-
+        //When the queue's finished
+        queue.drain = function(){
+            callback();
+        };
     };
 
     /**
@@ -331,41 +360,12 @@ function Account(db){
     };
 
     /**
-     * Calculate an account balance
-     * @param  Object   accountId  MongoDB ObjectId
-     * @param  Object   account
-     * @param  Function callback
-     * @return void
-     */
-    this.getAccountBalance = function(accountId, account, callback){
-
-        collection.find({_id: accountId}, {transactions : 1}).toArray(function(e, account){
-
-            var balance = 0;
-
-            _.each(account[0].transactions, function(item, index){
-
-                //Check if we're adding or subtracting
-                if(item.withdrawal)
-                    balance -= item.amount;
-                else if(item.deposit)
-                    balance += item.amount;
-            });
-
-            callback(balance);
-        });
-    };
-
-    /**
      * Add transaction to acccount
      * - For use as a ASYNC queue worker
      * @param Object   transaction
      * @param Function callback
      */
     this.addTransaction = function(transaction, callback) {
-
-        console.log("ADD TRANSACTION");
-        console.log(transaction);
 
         var accountId = transaction.accountId;
 

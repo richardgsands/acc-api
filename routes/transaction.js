@@ -122,8 +122,6 @@ function Transaction(db){
             collection.find({_id: ObjectID.createFromHexString(req.params.id)}, {transactions:true, _id:false}).toArray(function(e, result) {
                 if (e) return next(e);
 
-                console.log(result[0].transactions.length);
-
                 if(!_.isEmpty(result))
                     res.json(result[0]);
                 else

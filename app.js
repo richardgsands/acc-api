@@ -13,22 +13,6 @@ var _ = require('underscore'),
 //Setup DB
 var db = mongoskin.db('localhost:27017/bankofdad', {safe:true});
 
-db.bind('account', {
-    byId: function(id, fn){
-
-        this.findById(id, function(err, result){
-
-            if(!_.isEmpty(result)){
-                result.id = result._id;
-                delete result._id;
-            }
-
-            fn(err, result);
-        });
-
-    }
-});
-
 //Setup Express
 var app = express();
 
