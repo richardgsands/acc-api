@@ -95,54 +95,102 @@
             </div>
 
             <hr />
-            <h2>Create Transaction</h2>
-            <!--
-            account_id: id,
-            amount: 20,
-            description: "A test withdrawal",
-            deposit: 0,
-            withdrawal: 1,
-            date: moment.utc("15/09/2013", "DD-MM-YYYY").toDate()
-            !-->
-            <form class="create-transaction form-horizontal">
-                <div class="control-group">
-                    <label class="control-label" for="id">Account:</label>
-                    <div class="controls">
-                        <select class="accounts-select" name="id">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Create Transaction</h2>
+                    <!--
+                    account_id: id,
+                    amount: 20,
+                    description: "A test withdrawal",
+                    deposit: 0,
+                    withdrawal: 1,
+                    date: moment.utc("15/09/2013", "DD-MM-YYYY").toDate()
+                    !-->
+                    <form class="create-transaction form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label" for="id">Account:</label>
+                            <div class="controls">
+                                <select class="accounts-select" name="id">
 
-                        </select>
-                    </div>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="amount">Amount:</label>
+                            <div class="controls">
+                                <input type="text" name="amount" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="description">Description:</label>
+                            <div class="controls">
+                                <input type="text" name="description" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="deposit">Deposit</label>
+                            <div class="controls">
+                                <input type="radio" name="type" value="deposit" />
+                            </div>
+                             <label class="control-label" for="deposit">Withdrawal</label>
+                            <div class="controls">
+                                <input type="radio" name="type" value="withdrawal" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <button class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div class="control-group">
-                    <label class="control-label" for="amount">Amount:</label>
-                    <div class="controls">
-                        <input type="text" name="amount" />
-                    </div>
+                <div class="col-md-6">
+                    <h2>View Transactions</h2>
+                    <form class="view-transactions form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label" for="id">Account:</label>
+                            <div class="controls">
+                                <select class="accounts-select" name="id">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="deposit">Deposit</label>
+                            <div class="controls">
+                                <input type="radio" name="type" value="deposit" />
+                            </div>
+                             <label class="control-label" for="deposit">Withdrawal</label>
+                            <div class="controls">
+                                <input type="radio" name="type" value="withdrawal" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="description">Date Start:</label>
+                            <div class="controls">
+                                <input type="text" name="date_start" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="description">Date End:</label>
+                            <div class="controls">
+                                <input type="text" name="date_end" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <button class="btn btn-primary">View</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div class="control-group">
-                    <label class="control-label" for="description">Description:</label>
-                    <div class="controls">
-                        <input type="text" name="description" />
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="deposit">Deposit</label>
-                    <div class="controls">
-                        <input type="radio" name="type" value="deposit" />
-                    </div>
-                     <label class="control-label" for="deposit">Withdrawal</label>
-                    <div class="controls">
-                        <input type="radio" name="type" value="withdrawal" />
-                    </div>
-                </div>
-                <div class="control-group">
-                    <div class="controls">
-                        <button class="btn btn-primary">Save</button>
-                    </div>
-                </div>
-            </form>
+        </div>
+        <hr/>
+        <h2>Transactions</h2>
+        <div class="table-holder">
         </div>
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
         <script type="text/javascript" src="/js/bankofdad.js"></script>
         <script type="text/javascript" src="/js/bankofdad_console.js"></script>
     </body>

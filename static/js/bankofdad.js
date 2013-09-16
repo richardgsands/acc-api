@@ -68,6 +68,36 @@ BOD.core = function(){
         return promise;
     };
 
+    this.getTransactions = function(data){
+
+        var url = BOD.CONFIG.api + '/transaction';
+        ///transaction/:id/:type?/:date_start?/:date_end?
+        if(!data.id)
+            return false;
+        else
+            url += '/' + data.id;
+
+        if(data.type === 'withdrawal' || data.type === 'deposit')
+            url += '/' + data.type;
+
+        if(data.date_end)
+            url += '/' + data.date_end;
+
+        if(data.date_end)
+            url += '/' + data.date_end;
+
+        var promise = $.Deferred();
+
+        makeRequest(url, {}, 'GET', function(err, data){
+
+            if(!err)
+                promise.resolve(data);
+        });
+
+        return promise;
+
+    };
+
     /**
      * Request wrapper
      * @param  String   url
@@ -102,10 +132,12 @@ BOD.core = function(){
         });
     };
 
+    //Exposed methods
     return {
         createAccount: createAccount,
         getAccounts: getAccounts,
         updateAccount: updateAccount,
-        createTransaction: createTransaction
+        createTransaction: createTransaction,
+        getTransactions: getTransactions
     };
 }();

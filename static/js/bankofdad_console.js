@@ -104,10 +104,19 @@ BOD.testConsole = function(){
             delete data.type;
             delete data.id;
 
-            console.log(data);
-
             BOD.core.createTransaction(data).done(function(response){
                  $alert.html('Transaction created');
+            });
+
+        });
+
+         $('.view-transactions').on('submit', function(e){
+            e.preventDefault();
+
+            var data = getInputData($(this));
+
+            BOD.core.getTransactions(data).done(function(response){
+                buildTransactionTable(response.transactions);
             });
 
         });
@@ -139,6 +148,26 @@ BOD.testConsole = function(){
         });
 
         return data;
+    };
+
+    this.buildTransactionTable = function(transactions){
+
+        var $table = $('<table class="table table-striped"><th>Amount</th><th>Type</th><th>Description</th><th>Date</th></table>');
+
+        for(var index in transactions){
+
+            var transaction = transactions[index];
+
+            var $row = $('<tr></tr>');
+
+            var type = (transaction.withdrawal) ? 'withdrawal' : 'deposit';
+
+            $row.append('<td>' + transaction.amount + '</td><td>' + type + '</td><td>' + transaction.description + '</td><td>' + moment.utc(transaction.date).format('DD/MM/YY') + '</td>');
+
+            $table.append($row);
+        }
+
+        $('.table-holder').html($table);
     };
 
 
