@@ -74,14 +74,45 @@ BOD.testConsole = function(){
 
             var data = getInputData($(this));
 
-            console.log(data);
-
             BOD.core.updateAccount(data).done(function(response){
                 $alert.html('Updated account: ' + response.id);
             });
         });
 
-        $('.accounts-select').on('change', function(e){
+        $('.create-transaction').on('submit', function(e){
+            e.preventDefault();
+
+            var data = getInputData($(this));
+            var type = $(this).find('input[type=radio]:checked').val();
+
+            if(type === undefined)
+                type = 'withdrawal';
+
+            if(type === 'withdrawal')
+                data.withdrawal = true;
+            else
+                data.withdrawal = false;
+
+            if(type === 'deposit')
+                data.deposit = true;
+            else
+                data.deposit = false;
+
+
+            data.account_id = data.id;
+
+            delete data.type;
+            delete data.id;
+
+            console.log(data);
+
+            BOD.core.createTransaction(data).done(function(response){
+                 $alert.html('Transaction created');
+            });
+
+        });
+
+        $('.accounts-select-update').on('change', function(e){
             var id = $(this).val();
 
             for(var index in loadedAccounts){

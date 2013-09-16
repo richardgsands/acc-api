@@ -19,32 +19,94 @@
             <div class="alert alert-success">
             </div>
             <hr />
-            <h2>Create account</h2>
-            <form class="create-account form-horizontal">
-                <div class="control-group">
-                    <label class="control-label" for="parent">Parent Name:</label>
-                    <div class="controls">
-                        <input type="text" name="parent_name" />
-                    </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Create account</h2>
+                    <form class="create-account form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label" for="parent">Parent Name:</label>
+                            <div class="controls">
+                                <input type="text" name="parent_name" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="child">Child Name:</label>
+                            <div class="controls">
+                                <input type="text" name="child_name" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <button class="btn btn-primary">Create</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div class="control-group">
-                    <label class="control-label" for="child">Child Name:</label>
-                    <div class="controls">
-                        <input type="text" name="child_name" />
-                    </div>
+                <div class="col-md-6">
+                    <h2>Update account</h2>
+                    <form class="update-account form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label" for="id">Account:</label>
+                            <div class="controls">
+                                <select class="accounts-select accounts-select-update" name="id">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="parent">Loan rate:</label>
+                            <div class="controls">
+                                <input type="text" name="loan_rate" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="parent">Saving rate:</label>
+                            <div class="controls">
+                                <input type="text" name="saving_rate" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="parent">Pocket money amount:</label>
+                            <div class="controls">
+                                <input type="text" name="pocket_money_amount" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="parent">Pocket money day:</label>
+                            <div class="controls">
+                                <select name="pocket_money_day">
+                                    <option value="0">Sunday</option>
+                                    <option value="1">Monday</option>
+                                    <option value="2">Tuesday</option>
+                                    <option value="3">Wednesday</option>
+                                    <option value="4">Thursday</option>
+                                    <option value="5">Friday</option>
+                                    <option value="6">Saturday</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <button class="btn btn-primary">Update</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div class="control-group">
-                    <div class="controls">
-                        <button class="btn btn-primary">Create</button>
-                    </div>
-                </div>
-            </form>
+            </div>
 
             <hr />
-            <h2>Update account</h2>
-            <form class="update-account form-horizontal">
+            <h2>Create Transaction</h2>
+            <!--
+            account_id: id,
+            amount: 20,
+            description: "A test withdrawal",
+            deposit: 0,
+            withdrawal: 1,
+            date: moment.utc("15/09/2013", "DD-MM-YYYY").toDate()
+            !-->
+            <form class="create-transaction form-horizontal">
                 <div class="control-group">
-                    <label class="control-label" for="parent">Account:</label>
+                    <label class="control-label" for="id">Account:</label>
                     <div class="controls">
                         <select class="accounts-select" name="id">
 
@@ -52,40 +114,30 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="parent">Loan rate:</label>
+                    <label class="control-label" for="amount">Amount:</label>
                     <div class="controls">
-                        <input type="text" name="loan_rate" />
+                        <input type="text" name="amount" />
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="parent">Saving rate:</label>
+                    <label class="control-label" for="description">Description:</label>
                     <div class="controls">
-                        <input type="text" name="saving_rate" />
+                        <input type="text" name="description" />
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="parent">Pocket money amount:</label>
+                    <label class="control-label" for="deposit">Deposit</label>
                     <div class="controls">
-                        <input type="text" name="pocket_money_amount" />
+                        <input type="radio" name="type" value="deposit" />
                     </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="parent">Pocket money day:</label>
+                     <label class="control-label" for="deposit">Withdrawal</label>
                     <div class="controls">
-                        <select name="pocket_money_day">
-                            <option value="0">Sunday</option>
-                            <option value="1">Monday</option>
-                            <option value="2">Tuesday</option>
-                            <option value="3">Wednesday</option>
-                            <option value="4">Thursday</option>
-                            <option value="5">Friday</option>
-                            <option value="6">Saturday</option>
-                        </select>
+                        <input type="radio" name="type" value="withdrawal" />
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="controls">
-                        <button class="btn btn-primary">Update</button>
+                        <button class="btn btn-primary">Save</button>
                     </div>
                 </div>
             </form>

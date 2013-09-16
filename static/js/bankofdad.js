@@ -55,6 +55,19 @@ BOD.core = function(){
         return promise;
     };
 
+    this.createTransaction = function(data){
+
+        var promise = $.Deferred();
+
+        makeRequest(BOD.CONFIG.api + '/transaction', data, 'POST', function(err, data){
+
+            if(!err)
+                promise.resolve(data);
+        });
+
+        return promise;
+    };
+
     /**
      * Request wrapper
      * @param  String   url
@@ -92,6 +105,7 @@ BOD.core = function(){
     return {
         createAccount: createAccount,
         getAccounts: getAccounts,
-        updateAccount: updateAccount
+        updateAccount: updateAccount,
+        createTransaction: createTransaction
     };
 }();
