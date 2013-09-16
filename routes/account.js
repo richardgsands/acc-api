@@ -34,7 +34,7 @@ function Account(db){
             "parent_name": req.body.parent_name,
             "child_name": req.body.child_name,
             "start_date": new Date(),
-            "current_date": new Date()
+            "current_date": req.body.current_date || new Date()
         };
 
         collection.insert(toInsert, {}, function(e, results){
@@ -204,10 +204,10 @@ function Account(db){
                     "date": start.clone().toDate() //make sure you clone() so we get a new instance
                 });
 
-                console.log(start.toDate());
             }
         }
 
+        //If there are no transactions to add just move on
         if(queue.length() < 1)
             callback();
 
@@ -227,31 +227,86 @@ function Account(db){
      */
     this.calculateInterest = function(account, days, callback) {
 
+        var start = moment(account.current_date),
+            queue = async.queue(self.addTransaction, 1); //Use an async queue to manage transaction callbacks
 
-        self.getAccountBalance(account.id, account, callback);
-        // var start = moment(account.current_date),
-        //     queue = async.queue(self.addTransaction, 1); //Use an async queue to manage transaction callbacks
 
-        // for (var i = days; i >= 0; i--) {
+        self.getAccountBalance(account.id, account, function(balance){
 
-        //     if(parseInt(account.pocket_money_day,10) === parseInt(start.add('days', 1).format('d'), 10)){
+            var interestRate;
+            var interest;
 
-        //         //Add Pocketmoney transaction
-        //         queue.push({
-        //             "accountId": account.id,
-        //             "amount": account.pocket_money_amount,
-        //             "description": 'Pocket Money (auto)',
-        //             "deposit": false,
-        //             "withdrawal": true,
-        //             "date": start.toDate()
-        //         });
-        //     }
-        // }
+            //Increment through day by day
+            for (var i = days; i >= 0; i--) {
+                start.add('days', 1);
 
-        // //When the queue's finished
-        // queue.drain = function(){
-        //     callback();
-        // };
+                //If we pass a monday add interest
+                if(1 === parseInt(start.format('d'), 10)){
+
+                    //Saving or Loan rate?
+                    if(balance >= 0){
+
+                        //Divide rate by 52 to get weekly rate
+                        interestRate = account.saving_rate / 52;
+
+                        //Calculate interest based on current balance
+                        interest = (balance / 100) * interestRate;
+
+                        //Round to 2 decimal places
+                        interest = Math.round(interest * 100) / 100;
+
+                        //Add transaction to queue
+                        queue.push({
+                            "accountId": account.id,
+                            "amount": interest,
+                            "description": 'Interest payment (auto)',
+                            "deposit": true,
+                            "withdrawal": false,
+                            "date": start.clone().toDate()
+                        });
+
+                        //Update balance we've got so we don't need to query data again
+                        balance += interest;
+
+                    }else{
+
+                        //Divide rate by 52 to get weekly rate
+                        interestRate = account.loan_rate / 52;
+
+                        //Calculate interest based on current balance
+                        interest = (balance / 100) * interestRate;
+
+                        //Round to 2 decimal places
+                        interest = Math.round(interest * 100) / 100;
+
+                        //Add transaction to queue
+                        queue.push({
+                            "accountId": account.id,
+                            "amount": interest,
+                            "description": 'Interest payment (auto)',
+                            "deposit": false,
+                            "withdrawal": true,
+                            "date": start.clone().toDate()
+                        });
+
+                        //Update balance we've got so we don't need to query data again
+                        balance -= interest;
+                    }
+
+                }
+            }
+
+            //If there are no transactions to add just move on
+            if(queue.length() < 1)
+                callback();
+
+            //When the queue's finished
+            queue.drain = function(){
+                callback();
+            };
+
+        });
+
     };
 
     /**
@@ -276,19 +331,28 @@ function Account(db){
     };
 
     /**
-     * [getAccountBalance description]
-     * @param  {[type]}   account  [description]
-     * @param  {[type]}   days     [description]
-     * @param  {Function} callback [description]
-     * @return {[type]}            [description]
+     * Calculate an account balance
+     * @param  Object   accountId  MongoDB ObjectId
+     * @param  Object   account
+     * @param  Function callback
+     * @return void
      */
-    this.getAccountBalance = function(accountId, callback){
+    this.getAccountBalance = function(accountId, account, callback){
 
-        console.log(accountId);
+        collection.find({_id: accountId}, {transactions : 1}).toArray(function(e, account){
 
-        collection.find({_id: ObjectID.createFromHexString(accountId)}, {transactions : 1}, function(e, account){
-            console.log(account);
-            callback();
+            var balance = 0;
+
+            _.each(account[0].transactions, function(item, index){
+
+                //Check if we're adding or subtracting
+                if(item.withdrawal)
+                    balance -= item.amount;
+                else if(item.deposit)
+                    balance += item.amount;
+            });
+
+            callback(balance);
         });
     };
 
@@ -300,9 +364,10 @@ function Account(db){
      */
     this.addTransaction = function(transaction, callback) {
 
-        var accountId = transaction.accountId;
-
+        console.log("ADD TRANSACTION");
         console.log(transaction);
+
+        var accountId = transaction.accountId;
 
         delete transaction.accountId;
 

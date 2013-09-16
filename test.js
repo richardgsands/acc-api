@@ -9,7 +9,8 @@ describe('Bank of Dad API', function(){
 
 
     /** ACCOUNT **/
-    var id;
+    var id,
+        fake_current_date = moment("Sep 15, 2013");
 
     it('create account fail validation', function(done){
         superagent.post('http://localhost:3000/account')
@@ -26,7 +27,8 @@ describe('Bank of Dad API', function(){
         superagent.post('http://localhost:3000/account')
         .send({
             parent_name: 'Gary',
-            child_name: 'Robbie'
+            child_name: 'Robbie',
+            current_date: fake_current_date.toDate()
         })
         .end(function(e,res){
             expect(e).to.eql(null);
@@ -102,8 +104,20 @@ describe('Bank of Dad API', function(){
             id: id
         })
         .end(function(e,res){
+
             expect(e).to.eql(null);
-            // done();
+
+            //Check date has been incrememeted correctly
+            var returned_date = moment(res.body.current_date);
+            fake_current_date.add('days', 15);
+            expect(fake_current_date.isSame(returned_date)).to.be(true);
+
+            //Check transactions entered
+            var returnedTransactions = _.pluck(res.body.transactions, 'description');
+            var expectedTransactions = [ 'Pocket Money (auto)', 'Pocket Money (auto)', 'Interest payment (auto)', 'Interest payment (auto)', 'Interest payment (auto)' ];
+            expect(returnedTransactions).to.eql(expectedTransactions);
+
+            done();
         });
     });
 
