@@ -10,7 +10,7 @@ describe('Bank of Dad API', function(){
 
     /** ACCOUNT **/
     var id,
-        fake_current_date = moment("Sep 15, 2013");
+        fake_current_date = moment.utc("15/09/2013", "DD-MM-YYYY");
 
     it('create account fail validation', function(done){
         superagent.post('http://localhost:3000/account')
@@ -124,33 +124,59 @@ describe('Bank of Dad API', function(){
         });
     });
 
-
-    it('delete account fail validation', function(done){
-        superagent.del('http://localhost:3000/account')
+    it('test large withdrawal and loan account', function(done){
+        superagent.post('http://localhost:3000/transaction')
         .send({
-        })
-        .end(function(e,res){
-            expect(e).to.eql(null);
-            expect(res.body.error).to.be(true);
-            expect(res.body.deleted).to.be.eql(undefined);
+            account_id: id,
+            amount: 20,
+            description: "A test withdrawal",
+            deposit: 0,
+            withdrawal: 1,
+            date: moment.utc("15/09/2013", "DD-MM-YYYY").toDate()
+        }).end(function(e,res){
+             superagent.post('http://localhost:3000/account/increment/')
+            .send({
+                days: 8,
+                id: id
+            }).end(function(e,res){
 
-            done();
+                expect(e).to.eql(null);
+
+                expect(res.body.balance).to.be(0.14);
+
+                done();
+            });
         });
+
     });
 
-    it('delete account', function(done){
-        superagent.del('http://localhost:3000/account')
-        .send({
-            id: id
-        })
-        .end(function(e,res){
-            expect(e).to.eql(null);
-            expect(res.body.error).not.to.be(true);
-            expect(res.body.deleted).to.not.be.empty();
 
-            done();
-        });
-    });
+    // it('delete account fail validation', function(done){
+    //     superagent.del('http://localhost:3000/account')
+    //     .send({
+    //     })
+    //     .end(function(e,res){
+    //         expect(e).to.eql(null);
+    //         expect(res.body.error).to.be(true);
+    //         expect(res.body.deleted).to.be.eql(undefined);
+
+    //         done();
+    //     });
+    // });
+
+    // it('delete account', function(done){
+    //     superagent.del('http://localhost:3000/account')
+    //     .send({
+    //         id: id
+    //     })
+    //     .end(function(e,res){
+    //         expect(e).to.eql(null);
+    //         expect(res.body.error).not.to.be(true);
+    //         expect(res.body.deleted).to.not.be.empty();
+
+    //         done();
+    //     });
+    // });
 
 
     /** **/

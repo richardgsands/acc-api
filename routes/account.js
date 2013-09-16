@@ -34,7 +34,7 @@ function Account(db){
                             balance += item.amount;
                     });
 
-                    result.balance = balance;
+                    result.balance =  Math.round(balance * 100) / 100;
 
                 }
 
@@ -64,6 +64,8 @@ function Account(db){
 
         if(self.handleErrors(req.validationErrors(), res))
             return;
+
+        console.log(req.body.current_date);
 
         var toInsert = {
             "parent_name": req.body.parent_name,
@@ -222,7 +224,7 @@ function Account(db){
      */
     this.calculatePocketMoneyAndInterest = function(account, days, callback) {
 
-        var start = moment(account.current_date),
+        var start = moment.utc(account.current_date), //parse as UTC (because it is!)
             queue = async.queue(self.addTransaction, 1),
             balance = account.balance; //Use an async queue to manage transaction callbacks
 
@@ -231,6 +233,8 @@ function Account(db){
 
             //Increment date
             start.add('days', 1);
+
+            var clone = start.clone();
 
             //It's pocket money day
             if(parseInt(account.pocket_money_day,10) === parseInt(start.format('d'), 10)){
@@ -242,7 +246,7 @@ function Account(db){
                     "description": 'Pocket Money (auto)',
                     "deposit": true,
                     "withdrawal": false,
-                    "date": start.clone().toDate() //make sure you clone() so we get a new instance
+                    "date": clone.toDate() //make sure you clone() so we get a new instance
                 });
 
                 //Update running balance
@@ -272,7 +276,7 @@ function Account(db){
                         "description": 'Interest payment (auto)',
                         "deposit": true,
                         "withdrawal": false,
-                        "date": start.clone().toDate()
+                        "date": clone.toDate()
                     });
 
                     //Update balance we've got so we don't need to query data again
@@ -292,12 +296,14 @@ function Account(db){
                     //Add transaction to queue
                     queue.push({
                         "accountId": account.id,
-                        "amount": interest,
+                        "amount": Math.abs(interest),
                         "description": 'Interest payment (auto)',
                         "deposit": false,
                         "withdrawal": true,
-                        "date": start.clone().toDate()
+                        "date": clone.toDate()
                     });
+
+                    console.log(clone.toDate());
 
                     //Update balance we've got so we don't need to query data again
                     balance -= interest;
