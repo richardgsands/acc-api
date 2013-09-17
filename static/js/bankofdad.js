@@ -82,7 +82,8 @@ BOD.core = function(){
      * - PUT /account
      * - Params inside data Object
      * - Requires an account 'id'
-     * - Optionally sets 'loan_rate', 'saving_rate', 'pocket_money_amount', 'pocket_money_day'
+     * - Optionally sets 'loan_rate', 'saving_rate', 'pocket_money_amount' and 'pocket_money_day'
+     * - Optionally sets 'goal' with properties 'name', 'value' and 'type'
      * @param  Object data
      * @return Object Promise
      */

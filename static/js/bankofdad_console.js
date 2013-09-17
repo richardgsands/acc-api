@@ -1,7 +1,7 @@
 var BOD = BOD || {};
 
 BOD.CONFIG = BOD.CONFIG || {};
-BOD.CONFIG.DEBUG = true;
+BOD.CONFIG.DEBUG = true; //Turn on some logging to console
 
 BOD.testConsole = function(){
 
@@ -20,6 +20,10 @@ BOD.testConsole = function(){
         bindForms();
     };
 
+    /**
+     * Get all accounts for dropdowns
+     * @return void
+     */
     this.getAccounts = function(){
 
         BOD.core.getAccounts().done(function(accounts){
@@ -42,6 +46,11 @@ BOD.testConsole = function(){
 
     };
 
+    /**
+     * Update the update form with account values
+     * @param  Object account
+     * @return void
+     */
     this.changeUpdateFormValues = function(account){
 
         $('.update-account').find('input').val('');
@@ -76,6 +85,16 @@ BOD.testConsole = function(){
 
             var data = getInputData($(this));
 
+            data.goal = {};
+
+            data.goal.name = data.goal_name;
+            data.goal.value = data.goal_value;
+            data.goal.type = data.goal_type;
+
+            delete data.goal_name;
+            delete data.goal_value;
+            delete data.goal_type;
+
             BOD.core.updateAccount(data).done(function(response){
                 $alert.html('Updated account: ' + response.id);
             });
@@ -101,11 +120,16 @@ BOD.testConsole = function(){
                 $dl.append('<dt>Balance</dt><dd>' + response.balance + '</dd>');
                 $dl.append('<dt>Transaction count</dt><dd>' + response.transactions.length + '</dd>');
 
+                $dl.append('<dt>Goal name</dt><dd>' + response.goal.name + '</dd>');
+                $dl.append('<dt>Goal value</dt><dd>' + response.goal.value + '</dd>');
+                $dl.append('<dt>Goal type</dt><dd>' + response.goal.type + '</dd>');
+
                 $('.info-wrapper').html($dl);
 
             });
         });
 
+        //Create transaction
         $('.create-transaction').on('submit', function(e){
             e.preventDefault();
 
@@ -137,6 +161,7 @@ BOD.testConsole = function(){
 
         });
 
+        //View all transactions for account
          $('.view-transactions').on('submit', function(e){
             e.preventDefault();
 
@@ -154,6 +179,7 @@ BOD.testConsole = function(){
 
         });
 
+        //Increment account
         $('.increment-account').on('submit', function(e){
 
             e.preventDefault();
@@ -169,8 +195,10 @@ BOD.testConsole = function(){
             });
         });
 
+        //Init date picker
         $('.datepicker').datepicker({dateFormat: "dd-mm-yy"});
 
+        //When account changes update fields.
         $('.accounts-select-update').on('change', function(e){
             var id = $(this).val();
 
@@ -178,7 +206,6 @@ BOD.testConsole = function(){
                 var account = loadedAccounts[index];
                 if(account.id == id){
                     changeUpdateFormValues(account);
-                    console.log(account);
                 }
             }
         });
@@ -200,6 +227,11 @@ BOD.testConsole = function(){
         return data;
     };
 
+    /**
+     * Build HTML table for transactions data
+     * @param  Array transactions
+     * @return void
+     */
     this.buildTransactionTable = function(transactions){
 
         var $table = $('<table class="table table-striped"><th>Amount</th><th>Type</th><th>Description</th><th>Date</th></table>');
