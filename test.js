@@ -163,32 +163,32 @@ describe('Bank of Dad API', function(){
     });
 
 
-    // it('delete account fail validation', function(done){
-    //     superagent.del('http://localhost:3000/account')
-    //     .send({
-    //     })
-    //     .end(function(e,res){
-    //         expect(e).to.eql(null);
-    //         expect(res.body.error).to.be(true);
-    //         expect(res.body.deleted).to.be.eql(undefined);
+    it('delete account fail validation', function(done){
+        superagent.del('http://localhost:3000/account')
+        .send({
+        })
+        .end(function(e,res){
+            expect(e).to.eql(null);
+            expect(res.body.error).to.be(true);
+            expect(res.body.deleted).to.be.eql(undefined);
 
-    //         done();
-    //     });
-    // });
+            done();
+        });
+    });
 
-    // it('delete account', function(done){
-    //     superagent.del('http://localhost:3000/account')
-    //     .send({
-    //         id: id
-    //     })
-    //     .end(function(e,res){
-    //         expect(e).to.eql(null);
-    //         expect(res.body.error).not.to.be(true);
-    //         expect(res.body.deleted).to.not.be.empty();
+    it('delete account', function(done){
+        superagent.del('http://localhost:3000/account')
+        .send({
+            id: id
+        })
+        .end(function(e,res){
+            expect(e).to.eql(null);
+            expect(res.body.error).not.to.be(true);
+            expect(res.body.deleted).to.not.be.empty();
 
-    //         done();
-    //     });
-    // });
+            done();
+        });
+    });
 
 
     /** **/
