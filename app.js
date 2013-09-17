@@ -46,11 +46,11 @@ app.post('/transaction', transactionHandler.createTransaction);
 app.get('/transaction/:id/:type?/:date_start?/:date_end?', transactionHandler.getTransactions);
 
 
-
+//Error middleware
 app.use(function(err, req, res, next) {
     res.send(500, {status:500, message: err.toString() || 'internal error', type:'internal'});
 });
 
-
+//Start server
 app.listen(3000);
 console.log('Listening on port 3000');
