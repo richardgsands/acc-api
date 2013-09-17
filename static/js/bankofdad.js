@@ -6,12 +6,16 @@ BOD.CONFIG = {
 
 /**
  * Bank of Dad - Core
+ * - This class/module provides an interace to the Bank of Dad API
  * @return Object
  */
 BOD.core = function(){
 
     /**
      * Create a new account
+     * - POST /account
+     * - Params inside data Object
+     * - Requires 'parent_name' and 'child_name'
      * @param  Object data
      * @return Object   Promise
      */
@@ -23,12 +27,20 @@ BOD.core = function(){
 
             if(!err)
                 promise.resolve(data);
+            else
+                promise.reject();
         });
 
         return promise;
 
     };
 
+    /**
+     * Get all accounts
+     * - GET /account
+     * - No params required / taken
+     * @return Object Promise
+     */
     this.getAccounts = function(){
 
         var promise = $.Deferred();
@@ -37,11 +49,43 @@ BOD.core = function(){
 
             if(!err)
                 promise.resolve(data);
+            else
+                promise.reject();
         });
 
         return promise;
     };
 
+    /**
+     * Get single account
+     * - GET /account/:id
+     * - No params required / taken
+     * @return Object Promise
+     */
+    this.getAccount = function(data){
+
+        var promise = $.Deferred();
+
+        makeRequest(BOD.CONFIG.api + '/account/' + data.id, {}, 'GET', function(err, data){
+
+            if(!err)
+                promise.resolve(data);
+            else
+                promise.reject();
+        });
+
+        return promise;
+    };
+
+    /**
+     * Update Account
+     * - PUT /account
+     * - Params inside data Object
+     * - Requires an account 'id'
+     * - Optionally sets 'loan_rate', 'saving_rate', 'pocket_money_amount', 'pocket_money_day'
+     * @param  Object data
+     * @return Object Promise
+     */
     this.updateAccount = function(data){
 
         var promise = $.Deferred();
@@ -50,11 +94,24 @@ BOD.core = function(){
 
             if(!err)
                 promise.resolve(data);
+            else
+                promise.reject();
         });
 
         return promise;
     };
 
+    /**
+     * Create transaction
+     * - POST /transaction
+     * - Params inside data Object
+     * - Requires an account 'id'
+     * - Requires a 'description'
+     * - Requires an 'amount'
+     * - Requires either 'withdrawal' or 'deposit' to be true
+     * @param  Object data
+     * @return Object Promise
+     */
     this.createTransaction = function(data){
 
         var promise = $.Deferred();
@@ -63,21 +120,33 @@ BOD.core = function(){
 
             if(!err)
                 promise.resolve(data);
+            else
+                promise.reject();
         });
 
         return promise;
     };
 
+    /**
+     * Get transactions
+     * - GET /transaction/:id/:type?/:date_start?/:date_end?
+     * - Params inside data Object
+     * - Requires an account 'id'
+     * - Optionally filter by type (withdrawal, deposit, either)
+     * - Optionally by date range in format dd-mm-yy, will also accept dd/mm/yyy using 'date_start' and 'date_end'
+     * @param  Object data
+     * @return Object Promise
+     */
     this.getTransactions = function(data){
 
         var url = BOD.CONFIG.api + '/transaction';
-        ///transaction/:id/:type?/:date_start?/:date_end?
+
         if(!data.id)
             return false;
         else
             url += '/' + data.id;
 
-        if(data.type === 'withdrawal' || data.type === 'deposit' || data.type === 'none')
+        if(data.type === 'withdrawal' || data.type === 'deposit' || data.type === 'either')
             url += '/' + data.type;
 
         if(data.date_start)
@@ -92,12 +161,23 @@ BOD.core = function(){
 
             if(!err)
                 promise.resolve(data);
+            else
+                promise.reject();
         });
 
         return promise;
 
     };
 
+    /**
+     * Incremement account
+     * - POST /account/increment
+     * - Params inside data Object
+     * - Move account forward in time by specified days
+     * - Data should include 'id' and 'days' keys
+     * @param  Object data
+     * @return Object Promise
+     */
     this.incrementAccount = function(data){
 
         var promise = $.Deferred();
@@ -106,6 +186,8 @@ BOD.core = function(){
 
             if(!err)
                 promise.resolve(data);
+            else
+                promise.reject();
         });
 
         return promise;
@@ -113,10 +195,11 @@ BOD.core = function(){
 
     /**
      * Request wrapper
-     * @param  String   url
-     * @param  Object   data
-     * @param  String   type
-     * @param  Function callback
+     * - Performs ajax request and uses callback when complete
+     * @param  String   url     URL to request
+     * @param  Object   data    Data for post/put requests
+     * @param  String   type    Request type, defaults to GET
+     * @param  Function callback    Will pass true as first parameter of callback on error
      * @return void
      */
     this.makeRequest = function(url, data, type, callback){
@@ -141,6 +224,14 @@ BOD.core = function(){
                     callback(false, data);
                 else
                     callback(true);
+            },
+            error: function(xhr, textStatus, error){
+
+                if(BOD.CONFIG.DEBUG){
+                    console.log("AJAX request failed: " + error);
+                }
+
+                callback(true);
             }
         });
     };
@@ -152,6 +243,7 @@ BOD.core = function(){
         updateAccount: updateAccount,
         createTransaction: createTransaction,
         getTransactions: getTransactions,
-        incrementAccount: incrementAccount
+        incrementAccount: incrementAccount,
+        getAccount: getAccount
     };
 }();

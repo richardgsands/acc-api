@@ -70,6 +70,7 @@ BOD.testConsole = function(){
 
         });
 
+        //Update
         $('.update-account').on('submit', function(e){
             e.preventDefault();
 
@@ -77,6 +78,31 @@ BOD.testConsole = function(){
 
             BOD.core.updateAccount(data).done(function(response){
                 $alert.html('Updated account: ' + response.id);
+            });
+        });
+
+        //Read/Get single
+        $('.get-account').on('submit', function(e){
+            e.preventDefault();
+
+            var data = getInputData($(this));
+
+            BOD.core.getAccount(data).done(function(response){
+
+                $dl = $('<dl>');
+
+                $dl.append('<dt>Parent Name</dt><dd>' + response.parent_name + '</dd>');
+                $dl.append('<dt>Child Name</dt><dd>' + response.child_name + '</dd>');
+                $dl.append('<dt>Current Date</dt><dd>' + moment.utc(response.current_date).format('DD-MM-YY') + '</dd>');
+                $dl.append('<dt>Loan Rate</dt><dd>' + response.loan_rate + '</dd>');
+                $dl.append('<dt>Saving Rate</dt><dd>' + response.saving_rate + '</dd>');
+                $dl.append('<dt>Pocket Money Amount</dt><dd>' + response.pocket_money_amount + '</dd>');
+                $dl.append('<dt>Pocket Money Day</dt><dd>' + response.pocket_money_day + '</dd>');
+                $dl.append('<dt>Balance</dt><dd>' + response.balance + '</dd>');
+                $dl.append('<dt>Transaction count</dt><dd>' + response.transactions.length + '</dd>');
+
+                $('.info-wrapper').html($dl);
+
             });
         });
 
@@ -119,7 +145,7 @@ BOD.testConsole = function(){
             data.type = $(this).find('input[type=radio]:checked').val();
 
             if(data.type === undefined)
-                data.type = 'none';
+                data.type = 'either';
 
 
             BOD.core.getTransactions(data).done(function(response){
@@ -134,8 +160,12 @@ BOD.testConsole = function(){
 
             var data = getInputData($(this));
 
-            BOD.core.incrementAccount(data).done(function(response){
+            var increment = BOD.core.incrementAccount(data);
+            increment.done(function(response){
                 buildTransactionTable(response.transactions);
+            });
+            increment.fail(function(){
+                console.log("FAIL");
             });
         });
 

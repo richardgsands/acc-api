@@ -20,7 +20,7 @@
             </div>
             <hr />
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <h2>Create account</h2>
                     <form class="create-account form-horizontal">
                         <div class="control-group">
@@ -42,7 +42,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <h2>Update account</h2>
                     <form class="update-account form-horizontal">
                         <div class="control-group">
@@ -91,6 +91,27 @@
                             </div>
                         </div>
                     </form>
+                </div>
+                <div class="col-md-4">
+                    <h2>Get account info</h2>
+                    <form class="get-account form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label" for="id">Account:</label>
+                            <div class="controls">
+                                <select class="accounts-select accounts-select-update" name="id">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <button class="btn btn-primary">Get</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="info-wrapper">
+
+                    </div>
                 </div>
             </div>
 
@@ -157,9 +178,9 @@
                         </div>
                         <div class="control-group">
                             <h3>Filter</h3>
-                            <label class="control-label" for="deposit">None</label>
+                            <label class="control-label" for="deposit">Either</label>
                             <div class="controls">
-                                <input type="radio" name="type" value="none" checked="checked" />
+                                <input type="radio" name="type" value="either" checked="checked" />
                             </div>
                             <label class="control-label" for="deposit">Deposit</label>
                             <div class="controls">
