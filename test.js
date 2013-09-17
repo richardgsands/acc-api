@@ -110,7 +110,7 @@ describe('Bank of Dad API', function(){
     });
 
     it('increment account', function(done){
-        superagent.post('http://localhost:3000/account/increment/')
+        superagent.post('http://localhost:3000/account/increment')
         .send({
             days: 15,
             id: id

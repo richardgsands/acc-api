@@ -98,6 +98,19 @@ BOD.core = function(){
 
     };
 
+    this.incrementAccount = function(data){
+
+        var promise = $.Deferred();
+
+        makeRequest('/account/increment', data, 'POST', function(err, data){
+
+            if(!err)
+                promise.resolve(data);
+        });
+
+        return promise;
+    };
+
     /**
      * Request wrapper
      * @param  String   url
@@ -138,6 +151,7 @@ BOD.core = function(){
         getAccounts: getAccounts,
         updateAccount: updateAccount,
         createTransaction: createTransaction,
-        getTransactions: getTransactions
+        getTransactions: getTransactions,
+        incrementAccount: incrementAccount
     };
 }();

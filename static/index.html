@@ -96,7 +96,7 @@
 
             <hr />
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <h2>Create Transaction</h2>
                     <!--
                     account_id: id,
@@ -144,7 +144,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <h2>View Transactions</h2>
                     <form class="view-transactions form-horizontal">
                         <div class="control-group">
@@ -185,6 +185,31 @@
                         <div class="control-group">
                             <div class="controls">
                                 <button class="btn btn-primary">View</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-4">
+                    <h2>Increment Account</h2>
+                    <span class="label label-info">Fast forward this account's time by specified days</span>
+                    <form class="increment-account form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label" for="id">Account:</label>
+                            <div class="controls">
+                                <select class="accounts-select" name="id">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="description">Days:</label>
+                            <div class="controls">
+                                <input type="text" name="days" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <button class="btn btn-primary">Incremement</button>
                             </div>
                         </div>
                     </form>

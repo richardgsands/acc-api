@@ -128,6 +128,17 @@ BOD.testConsole = function(){
 
         });
 
+        $('.increment-account').on('submit', function(e){
+
+            e.preventDefault();
+
+            var data = getInputData($(this));
+
+            BOD.core.incrementAccount(data).done(function(response){
+                buildTransactionTable(response.transactions);
+            });
+        });
+
         $('.datepicker').datepicker({dateFormat: "dd-mm-yy"});
 
         $('.accounts-select-update').on('change', function(e){
