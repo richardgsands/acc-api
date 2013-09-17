@@ -118,8 +118,9 @@ BOD.testConsole = function(){
 
             data.type = $(this).find('input[type=radio]:checked').val();
 
-            if(data.type === undefined || data.type === 'none')
-                delete data.type;
+            if(data.type === undefined)
+                data.type = 'none';
+
 
             BOD.core.getTransactions(data).done(function(response){
                 buildTransactionTable(response.transactions);

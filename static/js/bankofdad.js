@@ -77,14 +77,14 @@ BOD.core = function(){
         else
             url += '/' + data.id;
 
-        if(data.type === 'withdrawal' || data.type === 'deposit')
+        if(data.type === 'withdrawal' || data.type === 'deposit' || data.type === 'none')
             url += '/' + data.type;
 
-        if(data.date_end)
-            url += '/' + data.date_end;
+        if(data.date_start)
+            url += '/' + data.date_start.replace(/\//g, '-');
 
         if(data.date_end)
-            url += '/' + data.date_end;
+            url += '/' + data.date_end.replace(/\//g, '-');
 
         var promise = $.Deferred();
 
