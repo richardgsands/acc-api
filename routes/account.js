@@ -225,9 +225,6 @@ function Account(db){
                 function(callback){
                     self.calculatePocketMoneyAndInterest(account, days, callback);
                 },
-                // function(callback){
-                //     self.calculateInterest(account, days, callback);
-                // },
                 function(callback){
                     self.updateCurrentDate(account, days, callback);
                 }
