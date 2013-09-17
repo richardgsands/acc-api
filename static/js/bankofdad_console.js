@@ -106,7 +106,7 @@ BOD.testConsole = function(){
             delete data.id;
 
             BOD.core.createTransaction(data).done(function(response){
-                 $alert.html('Transaction created');
+                $alert.html('Transaction created');
             });
 
         });
@@ -127,6 +127,8 @@ BOD.testConsole = function(){
             });
 
         });
+
+        $('.datepicker').datepicker({dateFormat: "dd-mm-yy"});
 
         $('.accounts-select-update').on('change', function(e){
             var id = $(this).val();
