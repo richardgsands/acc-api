@@ -109,7 +109,7 @@ function Transaction(db){
             //Type filter
             if(!_.isEmpty(req.params.type) && req.params.type === 'withdrawal'){
                 pipeline.push({'$match': {'transactions.withdrawal': true}});
-            }else if(!_.isEmpty(req.params.type) && req.params.type === 'withdrawal'){
+            }else if(!_.isEmpty(req.params.type) && req.params.type === 'deposit'){
                 pipeline.push({'$match': {'transactions.deposit': true}});
             }
 

@@ -67,6 +67,7 @@ BOD.testConsole = function(){
             BOD.core.createAccount(data).done(function(response){
                 $alert.html('Created account: ' + response.id);
             });
+
         });
 
         $('.update-account').on('submit', function(e){
@@ -114,6 +115,11 @@ BOD.testConsole = function(){
             e.preventDefault();
 
             var data = getInputData($(this));
+
+            data.type = $(this).find('input[type=radio]:checked').val();
+
+            if(data.type === undefined || data.type === 'none')
+                delete data.type;
 
             BOD.core.getTransactions(data).done(function(response){
                 buildTransactionTable(response.transactions);
