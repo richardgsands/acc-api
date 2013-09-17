@@ -35,7 +35,7 @@ function Transaction(db){
             return;
 
         var newTransaction = {
-            "amount": req.body.amount,
+            "amount": parseFloat(req.body.amount, 10),
             "description": req.body.description,
             "deposit": req.body.deposit,
             "withdrawal": req.body.withdrawal,

@@ -29,9 +29,10 @@ function Account(db){
 
                         //Check if we're adding or subtracting
                         if(item.withdrawal)
-                            balance -= item.amount;
+                            balance -= parseFloat(item.amount, 10);
                         else if(item.deposit)
-                            balance += item.amount;
+                            balance += parseFloat(item.amount, 10);
+
                     });
 
                     result.balance =  Math.round(balance * 100) / 100;
