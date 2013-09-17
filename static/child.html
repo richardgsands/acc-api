@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Bank of Dad - Test Console</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+
+        <style type="text/css">
+            .value{
+                font-size: 100px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>My Money</h1>
+            <div class="balance">
+                Current balance: £<span class="value"></span>
+            </div>
+            <div class="pocket-money">
+                Next pocket money in:<span class="value"></span>days
+            </div>
+            <div class="goals">
+                <h2>Saving goal</h2>
+                <form class="update-account form-horizontal">
+                    <div class="control-group">
+                        <label class="control-label" for="parent">Goal Name:</label>
+                        <div class="controls">
+                            <input type="text" name="name" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="parent">Goal target:</label>
+                        <div class="controls">
+                            <input type="text" name="value" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </form>
+                You have <span class="value"></span> weeks until you meet your goal with just pocket money.
+            </div>
+
+        </div>
+
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
+        <script type="text/javascript" src="/js/bankofdad.js"></script>
+        <script type="text/javascript" src="/js/child.js"></script>
+    </body>
+</html>
