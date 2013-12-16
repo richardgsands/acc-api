@@ -16,6 +16,8 @@
   "gitHead": "bba61b962ffa7b38032f7ba2e94a27e05b89a1b8",
   "dependencies": {
     "express": "~3.4.0",
+    "expect": "~0.0.2",
+    "superagent": "~0.15.7",
     "mocha": "~1.12.1",
     "mongoskin": "~0.6.0",
     "underscore": "~1.5.2",
