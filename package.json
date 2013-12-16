@@ -20,7 +20,8 @@
     "mongoskin": "~0.6.0",
     "underscore": "~1.5.2",
     "express-validator": "~0.8.0",
-    "async": "~0.2.9"
+    "async": "~0.2.9",
+    "moment": "~2.4.0"
   },
   "devDependencies": {
     "mocha": "~1.12.1"
