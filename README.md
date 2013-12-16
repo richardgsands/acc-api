@@ -1,5 +1,4 @@
-#Bank of Dad API
-API for Capital One "Bank of Dad" incubator
+#Simple Account API
 
 ##Requirements
 
@@ -42,8 +41,8 @@ There is a test console that gives access to most of the API functionality here:
 [http://localhost:3000/test]()
 
 ##Example apps
-* Dad's: http://localhost:3000/test/dad.html
-* Child's: http://localhost:3000/test/child.html
+* Sponsor: http://localhost:3000/test/sponsor.html
+* Receiver: http://localhost:3000/test/receiver.html
 
 ##Base JavaScript API wrapper
-The JavaScript file `static/js/bankofdad.js` provides an abstracted interface to the API. 
+The JavaScript file `static/js/acc.js` provides an abstracted interface to the API. 
