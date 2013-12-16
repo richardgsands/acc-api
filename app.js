@@ -27,7 +27,7 @@ app.use('/js', express.static(__dirname + '/static/js'));
 
 //Home page
 app.get('/', function(req, res, next){
-    res.send('Bank of Dad API');
+    res.send('Acc API');
 });
 
 var accountHandler = new AccountHandler(db);
