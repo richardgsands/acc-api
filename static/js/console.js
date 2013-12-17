@@ -1,9 +1,9 @@
-var BOD = BOD || {};
+var ACC = ACC || {};
 
-BOD.CONFIG = BOD.CONFIG || {};
-BOD.CONFIG.DEBUG = true; //Turn on some logging to console
+ACC.CONFIG = ACC.CONFIG || {};
+ACC.CONFIG.DEBUG = true; //Turn on some logging to console
 
-BOD.testConsole = function(){
+ACC.testConsole = function(){
 
     var $alert,
         loadedAccounts;
@@ -26,7 +26,7 @@ BOD.testConsole = function(){
      */
     this.getAccounts = function(){
 
-        BOD.core.getAccounts().done(function(accounts){
+        ACC.core.getAccounts().done(function(accounts){
 
             loadedAccounts = accounts;
 
@@ -73,7 +73,7 @@ BOD.testConsole = function(){
 
             var data = getInputData($(this));
 
-            BOD.core.createAccount(data).done(function(response){
+            ACC.core.createAccount(data).done(function(response){
                 $alert.html('Created account: ' + response.id);
             });
 
@@ -95,7 +95,7 @@ BOD.testConsole = function(){
             delete data.goal_value;
             delete data.goal_type;
 
-            BOD.core.updateAccount(data).done(function(response){
+            ACC.core.updateAccount(data).done(function(response){
                 $alert.html('Updated account: ' + response.id);
             });
         });
@@ -106,7 +106,7 @@ BOD.testConsole = function(){
 
             var data = getInputData($(this));
 
-            BOD.core.getAccount(data).done(function(response){
+            ACC.core.getAccount(data).done(function(response){
 
                 $dl = $('<dl>');
 
@@ -155,7 +155,7 @@ BOD.testConsole = function(){
             delete data.type;
             delete data.id;
 
-            BOD.core.createTransaction(data).done(function(response){
+            ACC.core.createTransaction(data).done(function(response){
                 $alert.html('Transaction created');
             });
 
@@ -173,7 +173,7 @@ BOD.testConsole = function(){
                 data.type = 'either';
 
 
-            BOD.core.getTransactions(data).done(function(response){
+            ACC.core.getTransactions(data).done(function(response){
                 buildTransactionTable(response.transactions);
             });
 
@@ -186,7 +186,7 @@ BOD.testConsole = function(){
 
             var data = getInputData($(this));
 
-            var increment = BOD.core.incrementAccount(data);
+            var increment = ACC.core.incrementAccount(data);
             increment.done(function(response){
                 buildTransactionTable(response.transactions);
             });
@@ -259,5 +259,5 @@ BOD.testConsole = function(){
 }();
 
 $(document).ready(function(){
-    BOD.testConsole.init();
+    ACC.testConsole.init();
 });

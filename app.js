@@ -11,7 +11,7 @@ var _ = require('underscore'),
 
 
 //Setup DB
-var db = mongoskin.db('localhost:27017/bankofdad', {safe:true});
+var db = mongoskin.db('localhost:27017/acc_app', {safe:true});
 
 //Setup Express
 var app = express();

@@ -5,7 +5,7 @@ var superagent = require('superagent'),
     moment = require('moment');
 
 
-describe('Bank of Dad API', function(){
+describe('Acc API', function(){
 
 
     /** ACCOUNT **/

@@ -5,7 +5,7 @@ var ACCOUNT_ID = "523716b2cd87cad76a000001";
 $(document).ready(function(){
 
     //Get account info
-    BOD.core.getAccount({id: ACCOUNT_ID}).done(function(account){
+    ACC.core.getAccount({id: ACCOUNT_ID}).done(function(account){
 
         //Display balance on screen
         $('.balance .value').html(account.balance);
@@ -37,7 +37,7 @@ $(document).ready(function(){
         });
 
         //Do API call
-        BOD.core.updateAccount(data, function(data){
+        ACC.core.updateAccount(data, function(data){
             //successfully updated
         });
     });
@@ -61,7 +61,7 @@ $(document).ready(function(){
         });
 
         //Do API call
-        BOD.core.createTransaction(data, function(data){
+        ACC.core.createTransaction(data, function(data){
             //successfully updated
         });
     });
@@ -84,7 +84,7 @@ $(document).ready(function(){
         });
 
         //Do API call
-        BOD.core.createTransaction(data, function(data){
+        ACC.core.createTransaction(data, function(data){
             //successfully updated
         });
     });

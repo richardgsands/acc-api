@@ -1,6 +1,6 @@
-var BOD = BOD || {};
+var ACC = ACC || {};
 
-BOD.CONFIG = {
+ACC.CONFIG = {
     api: "http://localhost:3000"
 };
 
@@ -9,7 +9,7 @@ BOD.CONFIG = {
  * - This class/module provides an interace to the Bank of Dad API
  * @return Object
  */
-BOD.core = function(){
+ACC.core = function(){
 
     /**
      * Create a new account
@@ -23,7 +23,7 @@ BOD.core = function(){
 
         var promise = $.Deferred();
 
-        makeRequest(BOD.CONFIG.api + '/account', data, 'POST', function(err, data){
+        makeRequest(ACC.CONFIG.api + '/account', data, 'POST', function(err, data){
 
             if(!err)
                 promise.resolve(data);
@@ -45,7 +45,7 @@ BOD.core = function(){
 
         var promise = $.Deferred();
 
-        makeRequest(BOD.CONFIG.api + '/account', {}, 'GET', function(err, data){
+        makeRequest(ACC.CONFIG.api + '/account', {}, 'GET', function(err, data){
 
             if(!err)
                 promise.resolve(data);
@@ -66,7 +66,7 @@ BOD.core = function(){
 
         var promise = $.Deferred();
 
-        makeRequest(BOD.CONFIG.api + '/account/' + data.id, {}, 'GET', function(err, data){
+        makeRequest(ACC.CONFIG.api + '/account/' + data.id, {}, 'GET', function(err, data){
 
             if(!err)
                 promise.resolve(data);
@@ -91,7 +91,7 @@ BOD.core = function(){
 
         var promise = $.Deferred();
 
-        makeRequest(BOD.CONFIG.api + '/account', data, 'PUT', function(err, data){
+        makeRequest(ACC.CONFIG.api + '/account', data, 'PUT', function(err, data){
 
             if(!err)
                 promise.resolve(data);
@@ -117,7 +117,7 @@ BOD.core = function(){
 
         var promise = $.Deferred();
 
-        makeRequest(BOD.CONFIG.api + '/transaction', data, 'POST', function(err, data){
+        makeRequest(ACC.CONFIG.api + '/transaction', data, 'POST', function(err, data){
 
             if(!err)
                 promise.resolve(data);
@@ -140,7 +140,7 @@ BOD.core = function(){
      */
     this.getTransactions = function(data){
 
-        var url = BOD.CONFIG.api + '/transaction';
+        var url = ACC.CONFIG.api + '/transaction';
 
         if(!data.id)
             return false;
@@ -207,7 +207,7 @@ BOD.core = function(){
 
         type = type || 'GET';
 
-        if(BOD.CONFIG.DEBUG)
+        if(ACC.CONFIG.DEBUG)
             console.log("Making AJAX request to: " + url);
 
         $.ajax({
@@ -216,7 +216,7 @@ BOD.core = function(){
             type: type,
             success: function(data, status){
 
-                if(BOD.CONFIG.DEBUG){
+                if(ACC.CONFIG.DEBUG){
                     console.log("AJAX request returned: " + status);
                     console.log(data);
                 }
@@ -228,7 +228,7 @@ BOD.core = function(){
             },
             error: function(xhr, textStatus, error){
 
-                if(BOD.CONFIG.DEBUG){
+                if(ACC.CONFIG.DEBUG){
                     console.log("AJAX request failed: " + error);
                 }
 
