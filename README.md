@@ -8,9 +8,10 @@
 ##Installation
 
 1. Git clone 
-2. Start Mongo DB server `mongod`
+2. In one terminal window/tab start Mongo DB server `mongod`
 3. Install dependancies `npm install`
-4. Run the app `node app.js`
+4. Install grunt cli globally `npm install -g grunt-cli`
+5. Run the app and start asset compilation `grunt`
 
 The API should now be available at: [http://localhost:3000]()
 
