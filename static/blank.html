@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Acc API</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="/css/blank.css">
+
+    </head>
+    <body>
+        <div class="container">
+            <h1>Acc API</h1>
+            <hr />
+            <div>
+                <div>
+                    <h2>Create account</h2>
+                    <form class="js-create-account">
+                        <label for="parent">Parent Name:</label>                    
+                        <input type="text" name="parent_name" />
+
+                        <label for="child">Child Name:</label>                        
+                        <input type="text" name="child_name" />
+
+                        <button>Create</button>
+                    </form>
+                </div>
+                <div>
+                    <h2>Update account</h2>
+                    <form class="js-update-account">
+                        <labelfor="id">Account:</label>
+                        <select class="js-accounts-select js-accounts-select-update" name="id"></select>
+
+                        <label for="loan_rate">Loan rate:</label>
+                        <input type="text" name="loan_rate" />
+                        
+                        <label for="saving_rate">Saving rate:</label>
+                        <input type="text" name="saving_rate" />
+                        
+                        <label for="pocket_money_amount">Pocket money amount:</label>
+                        <input type="text" name="pocket_money_amount" />
+                        
+                        <label for="pocket_money_day">Pocket money day:</label>                        
+                        <select name="pocket_money_day">
+                            <option value="0">Sunday</option>
+                            <option value="1">Monday</option>
+                            <option value="2">Tuesday</option>
+                            <option value="3">Wednesday</option>
+                            <option value="4">Thursday</option>
+                            <option value="5">Friday</option>
+                            <option value="6">Saturday</option>
+                        </select>
+                        
+                        <label for="goal_name">Goal Name:</label>
+                        <input type="text" name="goal_name" />
+                        
+                        <label for="goal_value">Goal value:</label>                        
+                        <input type="text" name="goal_value" />
+                        
+                        <label for="goal_type">Goal type:</label>
+                        <input type="text" name="goal_type" />
+                        
+                        <button>Update</button>
+                    
+                    </form>
+                </div>
+                <div>
+                    <h2>Get account info</h2>
+                    <form class="js-get-account">
+                        
+                        <label for="id">Account:</label>
+                        <select class="js-accounts-select js-accounts-select-update" name="id"></select>
+
+                        <button class="btn btn-primary">Get</button>
+                        
+                    </form>
+                    <div class="js-info-wrapper">
+
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+            <div>
+                <div>
+                    <h2>Create Transaction</h2>
+                    <form class="js-create-transaction">                        
+                        <label for="id">Account:</label>                        
+                        <select class="js-accounts-select" name="id"></select>
+                        
+                        <label for="amount">Amount:</label>
+                        <input type="text" name="amount" />
+                        
+                        <label for="description">Description:</label>
+                        <input type="text" name="description" />
+                        
+                        <label for="deposit">Deposit</label>
+                        <input type="radio" name="type" value="deposit" />
+                        
+                        <label for="deposit">Withdrawal</label>
+                        <input type="radio" name="type" value="withdrawal" />
+                        
+                        <button>Save</button>
+                        
+                    </form>
+                </div>
+                <div>
+                    <h2>View Transactions</h2>
+                    <form class="js-view-transactions">
+                        
+                        <label for="id">Account:</label>
+
+                        <select class="js-accounts-select" name="id"></select>
+                        
+                        <h3>Filter</h3>
+                        <label for="type">Either</label>
+                        <input type="radio" name="type" value="either" checked="checked" />
+                        
+                        <label for="type">Deposit</label>
+                        <input type="radio" name="type" value="deposit" />
+                        
+                        <label for="type">Withdrawal</label>
+                        <input type="radio" name="type" value="withdrawal" />
+                        
+                        <label for="date_start">Date Start:</label>
+                        <input type="text" name="date_start" class="js-datepicker" />
+                        
+                        <label for="date_end">Date End:</label>                            
+                        <input type="text" name="date_end" class="js-datepicker" />
+                        
+                        <button>View</button>
+                            
+                    </form>
+                </div>
+                <div>
+                    <h2>Increment Account</h2>
+                    <span>Fast forward this account's time by specified days</span>
+                    <form class="js-increment-account">                        
+                        <label for="id">Account:</label>
+                        
+                        <select class="accounts-select" name="id"></select>
+                        
+                        <label for="description">Days:</label>                        
+                        <input type="text" name="days" />
+                            
+                        <button>Incremement</button>
+                        
+                    </form>
+                </div>
+        </div>
+        <hr/>
+        <h2>Transactions</h2>
+        <div class="js-table-holder">
+        </div>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
+        <script type="text/javascript" src="/js/acc.js"></script>
+        <script type="text/javascript" src="/js/acc_blank.js"></script>
+    </body>
+</html>

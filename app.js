@@ -24,6 +24,7 @@ app.use(expressValidator());
 //Set up static file serving
 app.use('/test', express.static(__dirname + '/static'));
 app.use('/js', express.static(__dirname + '/static/js'));
+app.use('/css', express.static(__dirname + '/static/css'));
 
 //Home page
 app.get('/', function(req, res, next){
