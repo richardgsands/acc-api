@@ -41,50 +41,60 @@
                 <div class="module">
                     <h2>Create account</h2>
                     <form class="js-create-account">
-                        <label for="parent_name">Parent Name:</label>
-                        <input type="text" name="parent_name" />
-
-                        <label for="child">Child Name:</label>
-                        <input type="text" name="child_name" />
-
+                        <div class="input-group">
+                            <label for="parent_name">Parent Name:</label>
+                            <input type="text" name="parent_name" />
+                        </div>
+                        <div class="input-group">
+                            <label for="child">Child Name:</label>
+                            <input type="text" name="child_name" />
+                        </div>
                         <button>Create</button>
                     </form>
                 </div>
                 <div class="module">
                     <h2>Update account</h2>
                     <form class="js-update-account">
-                        <labelfor="id">Account:</label>
-                        <select class="js-accounts-select js-accounts-select-update" name="id"></select>
-
-                        <label for="loan_rate">Loan rate:</label>
-                        <input type="text" name="loan_rate" />
-
-                        <label for="saving_rate">Saving rate:</label>
-                        <input type="text" name="saving_rate" />
-
-                        <label for="pocket_money_amount">Pocket money amount:</label>
-                        <input type="text" name="pocket_money_amount" />
-
-                        <label for="pocket_money_day">Pocket money day:</label>
-                        <select name="pocket_money_day">
-                            <option value="0">Sunday</option>
-                            <option value="1">Monday</option>
-                            <option value="2">Tuesday</option>
-                            <option value="3">Wednesday</option>
-                            <option value="4">Thursday</option>
-                            <option value="5">Friday</option>
-                            <option value="6">Saturday</option>
-                        </select>
-
-                        <label for="goal_name">Goal Name:</label>
-                        <input type="text" name="goal_name" />
-
-                        <label for="goal_value">Goal value:</label>
-                        <input type="text" name="goal_value" />
-
-                        <label for="goal_type">Goal type:</label>
-                        <input type="text" name="goal_type" />
-
+                        <div class="input-group">
+                            <labelfor="id">Account:</label>
+                            <select class="js-accounts-select js-accounts-select-update" name="id"></select>
+                        </div>
+                        <div class="input-group">
+                            <label for="loan_rate">Loan rate:</label>
+                            <input type="text" name="loan_rate" />
+                        </div>
+                        <div class="input-group">
+                            <label for="saving_rate">Saving rate:</label>
+                            <input type="text" name="saving_rate" />
+                        </div>
+                        <div class="input-group">
+                            <label for="pocket_money_amount">Pocket money amount:</label>
+                            <input type="text" name="pocket_money_amount" />
+                        </div>
+                        <div class="input-group">
+                            <label for="pocket_money_day">Pocket money day:</label>
+                            <select name="pocket_money_day">
+                                <option value="0">Sunday</option>
+                                <option value="1">Monday</option>
+                                <option value="2">Tuesday</option>
+                                <option value="3">Wednesday</option>
+                                <option value="4">Thursday</option>
+                                <option value="5">Friday</option>
+                                <option value="6">Saturday</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="goal_name">Goal Name:</label>
+                            <input type="text" name="goal_name" />
+                        </div>
+                        <div class="input-group">
+                            <label for="goal_value">Goal value:</label>
+                            <input type="text" name="goal_value" />
+                        </div>
+                        <div class="input-group">
+                            <label for="goal_type">Goal type:</label>
+                            <input type="text" name="goal_type" />
+                        </div>
                         <button>Update</button>
 
                     </form>
@@ -92,10 +102,10 @@
                 <div class="module">
                     <h2>Get account info</h2>
                     <form class="js-get-account">
-
-                        <label for="id">Account:</label>
-                        <select class="js-accounts-select js-accounts-select-update" name="id"></select>
-
+                        <div class="input-group">
+                            <label for="id">Account:</label>
+                            <select class="js-accounts-select js-accounts-select-update" name="id"></select>
+                        </div>
                         <button class="btn btn-primary">Get</button>
 
                     </form>
@@ -110,21 +120,26 @@
                 <div class="module">
                     <h2>Create Transaction</h2>
                     <form class="js-create-transaction">
-                        <label for="id">Account:</label>
-                        <select class="js-accounts-select" name="id"></select>
-
-                        <label for="amount">Amount:</label>
-                        <input type="text" name="amount" />
-
-                        <label for="description">Description:</label>
-                        <input type="text" name="description" />
-
-                        <label for="deposit">Deposit</label>
-                        <input type="radio" name="type" value="deposit" />
-
-                        <label for="deposit">Withdrawal</label>
-                        <input type="radio" name="type" value="withdrawal" />
-
+                        <div class="input-group">
+                            <label for="id">Account:</label>
+                            <select class="js-accounts-select" name="id"></select>
+                        </div>
+                        <div class="input-group">
+                            <label for="amount">Amount:</label>
+                            <input type="text" name="amount" />
+                        </div>
+                        <div class="input-group">
+                            <label for="description">Description:</label>
+                            <input type="text" name="description" />
+                        </div>
+                        <div class="input-group">
+                            <label for="deposit">Deposit</label>
+                            <input type="radio" name="type" value="deposit" />
+                        </div>
+                        <div class="input-group">
+                            <label for="deposit">Withdrawal</label>
+                            <input type="radio" name="type" value="withdrawal" />
+                        </div>
                         <button>Save</button>
 
                     </form>
@@ -132,27 +147,31 @@
                 <div class="module">
                     <h2>View Transactions</h2>
                     <form class="js-view-transactions">
-
-                        <label for="id">Account:</label>
-
-                        <select class="js-accounts-select" name="id"></select>
-
-                        <h3>Filter</h3>
-                        <label for="type">Either</label>
-                        <input type="radio" name="type" value="either" checked="checked" />
-
-                        <label for="type">Deposit</label>
-                        <input type="radio" name="type" value="deposit" />
-
-                        <label for="type">Withdrawal</label>
-                        <input type="radio" name="type" value="withdrawal" />
-
-                        <label for="date_start">Date Start:</label>
-                        <input type="text" name="date_start" class="js-datepicker" />
-
-                        <label for="date_end">Date End:</label>
-                        <input type="text" name="date_end" class="js-datepicker" />
-
+                        <div class="input-group">
+                            <label for="id">Account:</label>
+                            <select class="js-accounts-select" name="id"></select>
+                        </div>
+                        <div class="input-group">
+                            <h3>Filter</h3>
+                            <label for="type">Either</label>
+                            <input type="radio" name="type" value="either" checked="checked" />
+                        </div>
+                        <div class="input-group">
+                            <label for="type">Deposit</label>
+                            <input type="radio" name="type" value="deposit" />
+                        </div>
+                        <div class="input-group">
+                            <label for="type">Withdrawal</label>
+                            <input type="radio" name="type" value="withdrawal" />
+                        </div>
+                        <div class="input-group">
+                            <label for="date_start">Date Start:</label>
+                            <input type="text" name="date_start" class="js-datepicker" />
+                        </div>
+                        <div class="input-group">
+                            <label for="date_end">Date End:</label>
+                            <input type="text" name="date_end" class="js-datepicker" />
+                        </div>
                         <button>View</button>
 
                     </form>
@@ -161,13 +180,14 @@
                     <h2>Increment Account</h2>
                     <span>Fast forward this account's time by specified days</span>
                     <form class="js-increment-account">
-                        <label for="id">Account:</label>
-
-                        <select class="accounts-select" name="id"></select>
-
-                        <label for="description">Days:</label>
-                        <input type="text" name="days" />
-
+                        <div class="input-group">
+                            <label for="id">Account:</label>
+                            <select class="accounts-select" name="id"></select>
+                        </div>
+                        <div class="input-group">
+                            <label for="description">Days:</label>
+                            <input type="text" name="days" />
+                        </div>
                         <button>Incremement</button>
 
                     </form>

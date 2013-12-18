@@ -39,17 +39,6 @@
         color: #BA8A38;
     }
 
-    #bg {
-      position: fixed; 
-      top: 0; 
-      left: 0;
-      z-index: -5;
-
-      /* Preserve aspet ratio */
-      min-width: 100%;
-      min-height: 100%;
-    }
-
     input[type='text'] {
       padding:0.2em 0.2em 0.2em 0.2em;
       outline:none;
@@ -63,10 +52,18 @@
     }
 
     button {
+      padding:0.45em;
       background:#4b82ba;
       color:#FFFFFF;
-      border:1px solid #4b82ba;
-      padding:0.4em;
+      border:0px;
+      -moz-transition: background .3s ease-in-out;
+      -webkit-transition: background .3s ease-in-out;
+      transition: background .3s ease-in-out;
+    }
+
+    label {
+      display: inline-block;
+      min-width: 120px;
     }
 
 
@@ -108,7 +105,7 @@
 */
 
     .module {
-        padding: 10px 20px;
+        padding: 10px 20px 20px 20px;
         background:#FFFFFF;
         border:1px solid #000000;
         width:80%;
@@ -122,6 +119,11 @@
         .module .title {
             margin: 0 0 20px 0;
         }
+
+    .input-group {
+      padding-right: 1em;
+      padding-bottom: 0.5em;
+    }
 
     .style-guide {
         border: 3px rgba(0,0,0,0.2) solid;
@@ -169,6 +171,10 @@
 
     .gamma {
         background-color: #000000;
+    }
+
+    button:hover {
+      background:#d87319;
     }
 
 
