@@ -1,10 +1,10 @@
 {
-  "name": "decoded_bank_of_dad",
+  "name": "acc-API",
   "version": "0.0.0",
   "description": "Bank of Dad API",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
