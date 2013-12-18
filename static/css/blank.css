@@ -27,6 +27,8 @@
     body, form {
         margin: 0;
         padding: 0;
+        font-family: code_pro;
+        font-weight: lighter;
     }
 
     a {
@@ -46,6 +48,18 @@
       /* Preserve aspet ratio */
       min-width: 100%;
       min-height: 100%;
+    }
+
+    input[type='text'] {
+      padding:0.2em 0.2em 0.2em 0.2em;
+      outline:none;
+      border:0.15em #d87319 dashed;
+      padding:0.4em;
+    }
+
+    input[type='text']:focus {
+      background:#4b82ba;
+      color:#FFFFFF;
     }
 
 
@@ -78,6 +92,14 @@
 
     .module {
         padding: 10px 20px;
+        background:#FFFFFF;
+        border:1px solid #000000;
+        width:80%;
+        position:relative;
+        left:50%;
+        margin-left:-40%;
+        margin-bottom:2em;
+        margin-top:2em;
     }
 
         .module .title {
