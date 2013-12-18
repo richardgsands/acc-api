@@ -52,10 +52,14 @@
 
     select {
       background: url(/images/arrow.png) no-repeat right white;
+      background-size: 10px 10px;
+      background-position: 95%;
       border:0.15em #d87319 dashed;
       padding:0.4em;
       -webkit-appearance: none;
       border-radius: 0;
+      outline: none;
+      
     }
 
     button {
