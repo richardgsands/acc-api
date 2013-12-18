@@ -28,7 +28,7 @@
         margin: 0;
         padding: 0;
         font-family: code_pro;
-        font-weight: lighter;
+        font-weight: normal;
     }
 
     a {
@@ -39,15 +39,11 @@
         color: #BA8A38;
     }
 
-    #bg {
-      position: fixed; 
-      top: 0; 
-      left: 0;
-      z-index: -5;
-
-      /* Preserve aspet ratio */
-      min-width: 100%;
-      min-height: 100%;
+    button {
+      background:#4b82ba;
+      color:#FFFFFF;
+      border:1px solid #4b82ba;
+      padding:0.4em;
     }
 
     input[type='text'] {
@@ -59,16 +55,14 @@
 
     input[type='text']:focus {
       border-style: solid;
-/*      background:#4b82ba;
-      color:#FFFFFF;
-      opacity: 0.7;
-*/    }
+    }
 
-    button {
-      background:#4b82ba;
-      color:#FFFFFF;
-      border:1px solid #4b82ba;
+    select {
+      background: transparent;
+      border:0.15em #d87319 dashed;
       padding:0.4em;
+      -webkit-appearance: none;
+      border-radius: 0;
     }
 
 
