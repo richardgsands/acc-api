@@ -290,12 +290,8 @@ function Account(db){
                     //Calculate interest based on current balance
                     interest = (balance / 100) * interestRate;
 
-                    console.log(interest, balance, interestRate);
-
                     //Round to 2 decimal places
                     interest = Math.round(interest * 100) / 100;
-
-                    console.log(interest);
 
                     //Add transaction to queue
                     queue.push({
