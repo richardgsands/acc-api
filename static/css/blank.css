@@ -36,7 +36,18 @@
     }
 
     a:hover {
-        color: #03F;
+        color: #BA8A38;
+    }
+
+    #bg {
+      position: fixed; 
+      top: 0; 
+      left: 0;
+      z-index: -5;
+
+      /* Preserve aspet ratio */
+      min-width: 100%;
+      min-height: 100%;
     }
 
 

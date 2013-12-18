@@ -25,6 +25,7 @@ app.use(expressValidator());
 app.use('/test', express.static(__dirname + '/static'));
 app.use('/js', express.static(__dirname + '/static/js'));
 app.use('/css', express.static(__dirname + '/static/css'));
+app.use('/images', express.static(__dirname + '/static/images'));
 
 //Home page
 app.get('/', function(req, res, next){
