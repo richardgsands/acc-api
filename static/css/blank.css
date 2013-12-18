@@ -14,6 +14,8 @@
    * http://tympanus.net/codrops/category/playground/
    * http://icomoon.io/
    ========================================================================== */
+
+
 /*
    Base
    ==========================================================================
@@ -21,21 +23,20 @@
     Normalising Base styles, no ID's or classes
 
 */
-/* line 27, ../../scss/blank.scss */
-body, form {
-  margin: 0;
-  padding: 0;
-}
 
-/* line 32, ../../scss/blank.scss */
-a {
-  color: #039;
-}
+    body, form {
+        margin: 0;
+        padding: 0;
+    }
 
-/* line 36, ../../scss/blank.scss */
-a:hover {
-  color: #03F;
-}
+    a {
+        color: #039;
+    }
+
+    a:hover {
+        color: #03F;
+    }
+
 
 /*
    Layout
@@ -43,19 +44,18 @@ a:hover {
 
     Main layout styles  Think about applicability with ID's vs Classes
 */
-/* line 50, ../../scss/blank.scss */
-#header,
-#article,
-#footer {
-  margin: auto;
-  width: 960px;
-}
 
-/* line 55, ../../scss/blank.scss */
-#article {
-  border: solid #CCC;
-  border-width: 1px 0 0;
-}
+    #header,
+    #article,
+    #footer {
+        margin: auto;
+        width: 960px;
+    }
+
+    #article {
+        border: solid #CCC;
+        border-width: 1px 0 0;
+    }
 
 /*
    Module
@@ -64,43 +64,38 @@ a:hover {
     Modular reusable component styles - almost always class selectors (not element)
 
 */
-/* line 68, ../../scss/blank.scss */
-.module {
-  padding: 10px 20px;
-}
 
-/* line 72, ../../scss/blank.scss */
-.module .title {
-  margin: 0 0 20px 0;
-}
+    .module {
+        padding: 10px 20px;
+    }
 
-/* line 76, ../../scss/blank.scss */
-.style-guide {
-  border: 3px rgba(0, 0, 0, 0.2) solid;
-  padding: 30px;
-}
+        .module .title {
+            margin: 0 0 20px 0;
+        }
 
-/* line 81, ../../scss/blank.scss */
-.text-box {
-  margin: 0 0 30px 0;
-}
+    .style-guide {
+        border: 3px rgba(0,0,0,0.2) solid;
+        padding: 30px;
+    }
 
-/* line 85, ../../scss/blank.scss */
-.color-swatch {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+        .text-box {
+            margin: 0 0 30px 0;
+        }
 
-/* line 91, ../../scss/blank.scss */
-.swatch-box {
-  color: #FFF;
-  display: inline-block;
-  height: 100px;
-  margin: 0 20px 20px 0;
-  padding: 10px;
-  width: 100px;
-}
+        .color-swatch {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+            .swatch-box {
+                color: #FFF;
+                display: inline-block;
+                height: 100px;
+                margin: 0 20px 20px 0;
+                padding: 10px;
+                width: 100px;
+            }
 
 /*
    State
@@ -109,25 +104,23 @@ a:hover {
     Arguements that over write all other styles, a modified version
 
 */
-/* line 108, ../../scss/blank.scss */
-.is-active {
-  border-color: #FF0000;
-}
 
-/* line 112, ../../scss/blank.scss */
-.alpha {
-  background-color: #739601;
-}
+    .is-active {
+        border-color: #FF0000;
+    }
 
-/* line 116, ../../scss/blank.scss */
-.beta {
-  background-color: #6c6f70;
-}
+    .alpha {
+        background-color: rgb(115,150,1);
+    }
 
-/* line 120, ../../scss/blank.scss */
-.gamma {
-  background-color: #44697d;
-}
+    .beta {
+        background-color: rgb(108, 111, 112);
+    }
+
+    .gamma {
+        background-color: rgb(68, 105, 125);
+    }
+
 
 /*
    Theme
@@ -136,7 +129,7 @@ a:hover {
     If your building a project with multiple themes - not always necessary
 
 */
-/* line 133, ../../scss/blank.scss */
-.mod-a {
-  background: #FF0000;
-}
+
+    .mod-a {
+        background: #FF0000;
+    }
