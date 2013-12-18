@@ -118,11 +118,16 @@ ACC.testConsole = function(){
                 $dl.append('<dt>Pocket Money Amount</dt><dd>' + response.pocket_money_amount + '</dd>');
                 $dl.append('<dt>Pocket Money Day</dt><dd>' + response.pocket_money_day + '</dd>');
                 $dl.append('<dt>Balance</dt><dd>' + response.balance + '</dd>');
-                $dl.append('<dt>Transaction count</dt><dd>' + response.transactions.length + '</dd>');
+                if(typeof response.transactions === 'object'){
+                    $dl.append('<dt>Transaction count</dt><dd>' + response.transactions.length + '</dd>');
+                }
 
-                $dl.append('<dt>Goal name</dt><dd>' + response.goal.name + '</dd>');
-                $dl.append('<dt>Goal value</dt><dd>' + response.goal.value + '</dd>');
-                $dl.append('<dt>Goal type</dt><dd>' + response.goal.type + '</dd>');
+
+                if(typeof response.goal === 'object'){
+                    $dl.append('<dt>Goal name</dt><dd>' + response.goal.name + '</dd>');
+                    $dl.append('<dt>Goal value</dt><dd>' + response.goal.value + '</dd>');
+                    $dl.append('<dt>Goal type</dt><dd>' + response.goal.type + '</dd>');
+                }
 
                 $('.info-wrapper').html($dl);
 
