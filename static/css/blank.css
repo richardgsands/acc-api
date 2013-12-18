@@ -28,7 +28,7 @@
         margin: 0;
         padding: 0;
         font-family: code_pro;
-        font-weight: lighter;
+        font-weight: normal;
     }
 
     a {
@@ -48,10 +48,15 @@
 
     input[type='text']:focus {
       border-style: solid;
-/*      background:#4b82ba;
-      color:#FFFFFF;
-      opacity: 0.7;
-*/    }
+    }
+
+    select {
+      background: transparent;
+      border:0.15em #d87319 dashed;
+      padding:0.4em;
+      -webkit-appearance: none;
+      border-radius: 0;
+    }
 
     button {
       padding:0.45em;
