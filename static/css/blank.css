@@ -89,14 +89,23 @@
     }
 
     .logo {
-      padding-left: 1em;
-      padding-right: 1em;
-      width: 400px;
+      width: 300px;
       height: auto;
       position:relative;
       left:50%;
-      margin-left:-200px;
+      margin-left:-150px;
+      background-color: #4B82BA;
+      -moz-transition: background .3s ease-in-out;
+      -webkit-transition: background .3s ease-in-out;
+      transition: background .3s ease-in-out;
     }
+
+        @media all and (min-width: 500px) {
+            .logo {
+              width: 500px;
+              margin-left:-250px;
+            }
+        }
 
 /*
    Module
@@ -109,7 +118,7 @@
     .module {
         padding: 10px 20px 20px 20px;
         background:#FFFFFF;
-        border:1px solid #000000;
+        border:1px solid #7e7e7e;
         width:80%;
         position:relative;
         left:50%;
@@ -177,6 +186,10 @@
 
     button:hover {
       background:#d87319;
+    }
+
+    .logo:hover {
+      background:#ff931e;
     }
 
 
