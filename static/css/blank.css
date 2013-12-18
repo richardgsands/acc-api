@@ -92,11 +92,11 @@
     .logo {
       padding-left: 1em;
       padding-right: 1em;
-      width: 500px;
+      width: 400px;
       height: auto;
       position:relative;
       left:50%;
-      margin-left:-250px;
+      margin-left:-200px;
     }
 
 /*
