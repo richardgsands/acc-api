@@ -35,7 +35,7 @@ ACC.testConsole = function(){
                 var account = accounts[index];
                 var $select = $('<option></option>');
 
-                $select.html(account.id + "  " + account.parent_name + ' - ' + account.child_name);
+                $select.html(account.parent_name + ' - ' + account.child_name);
                 $select.val(account.id);
 
                 $('.js-accounts-select').append($select);

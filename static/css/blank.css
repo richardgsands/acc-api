@@ -51,7 +51,7 @@
     }
 
     select {
-      background: transparent;
+      background: url(/images/arrow.png) no-repeat right white;
       border:0.15em #d87319 dashed;
       padding:0.4em;
       -webkit-appearance: none;
