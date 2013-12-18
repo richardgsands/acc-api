@@ -1,3 +1,135 @@
-body{
-	
-}
+/* ==========================================================================
+   Typography
+
+   * Base
+   * Layout
+   * Modules
+   * States
+   * Themes
+
+   Resources:
+   * http://smacss.com/
+   * http://bem.info/method/definitions/
+   * http://caniuse.com/
+   * http://tympanus.net/codrops/category/playground/
+   * http://icomoon.io/
+   ========================================================================== */
+
+
+/*
+   Base
+   ==========================================================================
+
+    Normalising Base styles, no ID's or classes
+
+*/
+
+    body, form {
+        margin: 0;
+        padding: 0;
+    }
+
+    a {
+        color: #039;
+    }
+
+    a:hover {
+        color: #03F;
+    }
+
+
+/*
+   Layout
+   ==========================================================================
+
+    Main layout styles  Think about applicability with ID's vs Classes
+*/
+
+    #header,
+    #article,
+    #footer {
+        margin: auto;
+        width: 960px;
+    }
+
+    #article {
+        border: solid #CCC;
+        border-width: 1px 0 0;
+    }
+
+/*
+   Module
+   ==========================================================================
+
+    Modular reusable component styles - almost always class selectors (not element)
+
+*/
+
+    .module {
+        padding: 10px 20px;
+    }
+
+        .module .title {
+            margin: 0 0 20px 0;
+        }
+
+    .style-guide {
+        border: 3px rgba(0,0,0,0.2) solid;
+        padding: 30px;
+    }
+
+        .text-box {
+            margin: 0 0 30px 0;
+        }
+
+        .color-swatch {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+            .swatch-box {
+                color: #FFF;
+                display: inline-block;
+                height: 100px;
+                margin: 0 20px 20px 0;
+                padding: 10px;
+                width: 100px;
+            }
+
+/*
+   State
+   ==========================================================================
+
+    Arguements that over write all other styles, a modified version
+
+*/
+
+    .is-active {
+        border-color: #FF0000;
+    }
+
+    .alpha {
+        background-color: rgb(115,150,1);
+    }
+
+    .beta {
+        background-color: rgb(108, 111, 112);
+    }
+
+    .gamma {
+        background-color: rgb(68, 105, 125);
+    }
+
+
+/*
+   Theme
+   ==========================================================================
+
+    If your building a project with multiple themes - not always necessary
+
+*/
+
+    .mod-a {
+        background: #FF0000;
+    }
